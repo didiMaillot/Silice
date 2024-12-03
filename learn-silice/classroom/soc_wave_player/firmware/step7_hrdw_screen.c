@@ -40,6 +40,7 @@ void main()
     display_set_cursor(x,y);
     printf("Hello world!");
     x += dx;
+      oled_clear(0);
     if (x > 64) {
       x  = 64;
       dx = -dx;

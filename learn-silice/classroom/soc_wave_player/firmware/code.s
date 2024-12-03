@@ -7,7 +7,7 @@ Déassemblage de la section .text :
 00000000 <_start>:
        0:	00010137          	lui	sp,0x10
        4:	00006097          	auipc	ra,0x6
-       8:	e70080e7          	jalr	-400(ra) # 5e74 <main>
+       8:	e80080e7          	jalr	-384(ra) # 5e84 <main>
        c:	00000317          	auipc	t1,0x0
       10:	00830067          	jr	8(t1) # 14 <exit>
 
@@ -98,11 +98,11 @@ Déassemblage de la section .text :
      130:	00200713          	li	a4,2
      134:	00e7a023          	sw	a4,0(a5)
      138:	000067b7          	lui	a5,0x6
-     13c:	e487a783          	lw	a5,-440(a5) # 5e48 <sdcard_while_loading_callback>
+     13c:	e587a783          	lw	a5,-424(a5) # 5e58 <sdcard_while_loading_callback>
      140:	00078067          	jr	a5
 
 00000144 <sdcard_read>:
-     144:	fd010113          	addi	sp,sp,-48 # ffd0 <_files+0x9ca0>
+     144:	fd010113          	addi	sp,sp,-48 # ffd0 <_files+0x9bb4>
      148:	fff50793          	addi	a5,a0,-1
      14c:	01312e23          	sw	s3,28(sp)
      150:	00100993          	li	s3,1
@@ -148,7 +148,7 @@ Déassemblage de la section .text :
      1f0:	00141413          	slli	s0,s0,0x1
      1f4:	00190913          	addi	s2,s2,1
      1f8:	00f46433          	or	s0,s0,a5
-     1fc:	e48c2783          	lw	a5,-440(s8) # 5e48 <sdcard_while_loading_callback>
+     1fc:	e58c2783          	lw	a5,-424(s8) # 5e58 <sdcard_while_loading_callback>
      200:	000780e7          	jalr	a5
      204:	f9dff06f          	j	1a0 <sdcard_read+0x5c>
 
@@ -321,7 +321,7 @@ Déassemblage de la section .text :
      474:	01312623          	sw	s3,12(sp)
      478:	00112e23          	sw	ra,28(sp)
      47c:	00912a23          	sw	s1,20(sp)
-     480:	e4f72423          	sw	a5,-440(a4) # 5e48 <sdcard_while_loading_callback>
+     480:	e4f72c23          	sw	a5,-424(a4) # 5e58 <sdcard_while_loading_callback>
      484:	00006937          	lui	s2,0x6
      488:	0ff00993          	li	s3,255
      48c:	d0040413          	addi	s0,s0,-768 # 1312d00 <__stacktop+0x1302d00>
@@ -733,31 +733,31 @@ Déassemblage de la section .text :
 
 00000a44 <display_set_cursor>:
      a44:	000067b7          	lui	a5,0x6
-     a48:	e4a7aa23          	sw	a0,-428(a5) # 5e54 <cursor_x>
+     a48:	e6a7a223          	sw	a0,-412(a5) # 5e64 <cursor_x>
      a4c:	000067b7          	lui	a5,0x6
-     a50:	e4b7a823          	sw	a1,-432(a5) # 5e50 <cursor_y>
+     a50:	e6b7a023          	sw	a1,-416(a5) # 5e60 <cursor_y>
      a54:	00008067          	ret
 
 00000a58 <display_set_front_back_color>:
      a58:	000067b7          	lui	a5,0x6
-     a5c:	e4a786a3          	sb	a0,-435(a5) # 5e4d <front_color>
+     a5c:	e4a78ea3          	sb	a0,-419(a5) # 5e5d <front_color>
      a60:	000067b7          	lui	a5,0x6
-     a64:	e4b78623          	sb	a1,-436(a5) # 5e4c <back_color>
+     a64:	e4b78e23          	sb	a1,-420(a5) # 5e5c <back_color>
      a68:	00008067          	ret
 
 00000a6c <display_putchar>:
      a6c:	00a00793          	li	a5,10
      a70:	00006737          	lui	a4,0x6
      a74:	02f51663          	bne	a0,a5,aa0 <display_putchar+0x34>
-     a78:	e4072a23          	sw	zero,-428(a4) # 5e54 <cursor_x>
+     a78:	e6072223          	sw	zero,-412(a4) # 5e64 <cursor_x>
      a7c:	00006737          	lui	a4,0x6
-     a80:	e5072783          	lw	a5,-432(a4) # 5e50 <cursor_y>
+     a80:	e6072783          	lw	a5,-416(a4) # 5e60 <cursor_y>
      a84:	00878793          	addi	a5,a5,8
-     a88:	e4f72823          	sw	a5,-432(a4)
+     a88:	e6f72023          	sw	a5,-416(a4)
      a8c:	07f00713          	li	a4,127
      a90:	00f75663          	bge	a4,a5,a9c <display_putchar+0x30>
      a94:	000067b7          	lui	a5,0x6
-     a98:	e407a823          	sw	zero,-432(a5) # 5e50 <cursor_y>
+     a98:	e607a023          	sw	zero,-416(a5) # 5e60 <cursor_y>
      a9c:	00008067          	ret
      aa0:	ff010113          	addi	sp,sp,-16
      aa4:	00812623          	sw	s0,12(sp)
@@ -783,9 +783,9 @@ Déassemblage de la section .text :
      af4:	f6054783          	lbu	a5,-160(a0)
      af8:	0067f7b3          	and	a5,a5,t1
      afc:	04078a63          	beqz	a5,b50 <display_putchar+0xe4>
-     b00:	e4d44883          	lbu	a7,-435(s0) # 5e4d <front_color>
-     b04:	e5472783          	lw	a5,-428(a4)
-     b08:	e50f2803          	lw	a6,-432(t5) # 5e50 <cursor_y>
+     b00:	e5d44883          	lbu	a7,-419(s0) # 5e5d <front_color>
+     b04:	e6472783          	lw	a5,-412(a4)
+     b08:	e60f2803          	lw	a6,-416(t5) # 5e60 <cursor_y>
      b0c:	00150513          	addi	a0,a0,1
      b10:	00f587b3          	add	a5,a1,a5
      b14:	00779793          	slli	a5,a5,0x7
@@ -797,22 +797,22 @@ Déassemblage de la section .text :
      b2c:	fdf594e3          	bne	a1,t6,af4 <display_putchar+0x88>
      b30:	00160613          	addi	a2,a2,1
      b34:	fa561ae3          	bne	a2,t0,ae8 <display_putchar+0x7c>
-     b38:	e5472783          	lw	a5,-428(a4)
+     b38:	e6472783          	lw	a5,-412(a4)
      b3c:	07f00693          	li	a3,127
      b40:	00578793          	addi	a5,a5,5
      b44:	00f6ca63          	blt	a3,a5,b58 <display_putchar+0xec>
-     b48:	e4f72a23          	sw	a5,-428(a4)
+     b48:	e6f72223          	sw	a5,-412(a4)
      b4c:	02c0006f          	j	b78 <display_putchar+0x10c>
-     b50:	e4c3c883          	lbu	a7,-436(t2) # 5e4c <back_color>
+     b50:	e5c3c883          	lbu	a7,-420(t2) # 5e5c <back_color>
      b54:	fb1ff06f          	j	b04 <display_putchar+0x98>
-     b58:	e4072a23          	sw	zero,-428(a4)
+     b58:	e6072223          	sw	zero,-412(a4)
      b5c:	00006737          	lui	a4,0x6
-     b60:	e5072783          	lw	a5,-432(a4) # 5e50 <cursor_y>
+     b60:	e6072783          	lw	a5,-416(a4) # 5e60 <cursor_y>
      b64:	00878793          	addi	a5,a5,8
-     b68:	e4f72823          	sw	a5,-432(a4)
+     b68:	e6f72023          	sw	a5,-416(a4)
      b6c:	00f6d663          	bge	a3,a5,b78 <display_putchar+0x10c>
      b70:	000067b7          	lui	a5,0x6
-     b74:	e407a823          	sw	zero,-432(a5) # 5e50 <cursor_y>
+     b74:	e607a023          	sw	zero,-416(a5) # 5e60 <cursor_y>
      b78:	00c12403          	lw	s0,12(sp)
      b7c:	01010113          	addi	sp,sp,16
      b80:	00008067          	ret
@@ -848,7 +848,7 @@ Déassemblage de la section .text :
      be0:	00412483          	lw	s1,4(sp)
      be4:	01010113          	addi	sp,sp,16
      be8:	00008067          	ret
-     bec:	e584a783          	lw	a5,-424(s1) # 5e58 <f_putchar>
+     bec:	e684a783          	lw	a5,-408(s1) # 5e68 <f_putchar>
      bf0:	00140413          	addi	s0,s0,1
      bf4:	000780e7          	jalr	a5
      bf8:	fd9ff06f          	j	bd0 <print_string+0x18>
@@ -862,7 +862,7 @@ Déassemblage de la section .text :
      c10:	11212823          	sw	s2,272(sp)
      c14:	00050413          	mv	s0,a0
      c18:	000069b7          	lui	s3,0x6
-     c1c:	e589a783          	lw	a5,-424(s3) # 5e58 <f_putchar>
+     c1c:	e689a783          	lw	a5,-408(s3) # 5e68 <f_putchar>
      c20:	06045e63          	bgez	s0,c9c <print_dec+0xa0>
      c24:	02d00513          	li	a0,45
      c28:	000780e7          	jalr	a5
@@ -882,7 +882,7 @@ Déassemblage de la section .text :
      c60:	fc041ae3          	bnez	s0,c34 <print_dec+0x38>
      c64:	fd2488e3          	beq	s1,s2,c34 <print_dec+0x38>
      c68:	fff4c503          	lbu	a0,-1(s1)
-     c6c:	e589a783          	lw	a5,-424(s3)
+     c6c:	e689a783          	lw	a5,-408(s3)
      c70:	fff48493          	addi	s1,s1,-1
      c74:	03050513          	addi	a0,a0,48
      c78:	000780e7          	jalr	a5
@@ -909,7 +909,7 @@ Déassemblage de la section .text :
      cc4:	00112e23          	sw	ra,28(sp)
      cc8:	00050493          	mv	s1,a0
      ccc:	00241413          	slli	s0,s0,0x2
-     cd0:	cc090913          	addi	s2,s2,-832 # 5cc0 <font+0x214>
+     cd0:	cd090913          	addi	s2,s2,-816 # 5cd0 <font+0x224>
      cd4:	000069b7          	lui	s3,0x6
      cd8:	02045063          	bgez	s0,cf8 <print_hex_digits+0x50>
      cdc:	01c12083          	lw	ra,28(sp)
@@ -922,7 +922,7 @@ Déassemblage de la section .text :
      cf8:	0084d7b3          	srl	a5,s1,s0
      cfc:	00f7f793          	andi	a5,a5,15
      d00:	00f907b3          	add	a5,s2,a5
-     d04:	e589a703          	lw	a4,-424(s3) # 5e58 <f_putchar>
+     d04:	e689a703          	lw	a4,-408(s3) # 5e68 <f_putchar>
      d08:	0007c503          	lbu	a0,0(a5)
      d0c:	ffc40413          	addi	s0,s0,-4
      d10:	000700e7          	jalr	a4
@@ -1001,7 +1001,7 @@ Déassemblage de la section .text :
      e24:	00000097          	auipc	ra,0x0
      e28:	dd8080e7          	jalr	-552(ra) # bfc <print_dec>
      e2c:	fbdff06f          	j	de8 <printf+0xc4>
-     e30:	e584a783          	lw	a5,-424(s1) # 5e58 <f_putchar>
+     e30:	e684a783          	lw	a5,-408(s1) # 5e68 <f_putchar>
      e34:	01751a63          	bne	a0,s7,e48 <printf+0x124>
      e38:	00c12703          	lw	a4,12(sp)
      e3c:	00072503          	lw	a0,0(a4)
@@ -1009,7 +1009,7 @@ Déassemblage de la section .text :
      e44:	00d12623          	sw	a3,12(sp)
      e48:	000780e7          	jalr	a5
      e4c:	f9dff06f          	j	de8 <printf+0xc4>
-     e50:	e584a783          	lw	a5,-424(s1)
+     e50:	e684a783          	lw	a5,-408(s1)
      e54:	00040913          	mv	s2,s0
      e58:	000780e7          	jalr	a5
      e5c:	f8dff06f          	j	de8 <printf+0xc4>
@@ -1297,12 +1297,12 @@ Déassemblage de la section .text :
     127c:	ff010113          	addi	sp,sp,-16
     1280:	000067b7          	lui	a5,0x6
     1284:	00812423          	sw	s0,8(sp)
-    1288:	e5c7a403          	lw	s0,-420(a5) # 5e5c <_free_file_list>
+    1288:	e6c7a403          	lw	s0,-404(a5) # 5e6c <_free_file_list>
     128c:	00112623          	sw	ra,12(sp)
     1290:	02040e63          	beqz	s0,12cc <_allocate_file+0x50>
     1294:	00042703          	lw	a4,0(s0)
     1298:	00442683          	lw	a3,4(s0)
-    129c:	e5c78793          	addi	a5,a5,-420
+    129c:	e6c78793          	addi	a5,a5,-404
     12a0:	04071063          	bnez	a4,12e0 <_allocate_file+0x64>
     12a4:	00d7a023          	sw	a3,0(a5)
     12a8:	00442683          	lw	a3,4(s0)
@@ -1310,7 +1310,7 @@ Déassemblage de la section .text :
     12b0:	00e7a223          	sw	a4,4(a5)
     12b4:	00006537          	lui	a0,0x6
     12b8:	00040593          	mv	a1,s0
-    12bc:	e6450513          	addi	a0,a0,-412 # 5e64 <_open_file_list>
+    12bc:	e7450513          	addi	a0,a0,-396 # 5e74 <_open_file_list>
     12c0:	00000097          	auipc	ra,0x0
     12c4:	bc8080e7          	jalr	-1080(ra) # e88 <fat_list_insert_last>
     12c8:	bc440413          	addi	s0,s0,-1084
@@ -1330,13 +1330,13 @@ Déassemblage de la section .text :
     12f8:	43c50593          	addi	a1,a0,1084
     12fc:	02079663          	bnez	a5,1328 <_free_file+0x38>
     1300:	000066b7          	lui	a3,0x6
-    1304:	e6e6a223          	sw	a4,-412(a3) # 5e64 <_open_file_list>
+    1304:	e6e6aa23          	sw	a4,-396(a3) # 5e74 <_open_file_list>
     1308:	44052703          	lw	a4,1088(a0)
     130c:	02071263          	bnez	a4,1330 <_free_file+0x40>
     1310:	00006737          	lui	a4,0x6
-    1314:	e6f72423          	sw	a5,-408(a4) # 5e68 <_open_file_list+0x4>
+    1314:	e6f72c23          	sw	a5,-392(a4) # 5e78 <_open_file_list+0x4>
     1318:	00006537          	lui	a0,0x6
-    131c:	e5c50513          	addi	a0,a0,-420 # 5e5c <_free_file_list>
+    131c:	e6c50513          	addi	a0,a0,-404 # 5e6c <_free_file_list>
     1320:	00000317          	auipc	t1,0x0
     1324:	b6830067          	jr	-1176(t1) # e88 <fat_list_insert_last>
     1328:	00e7a223          	sw	a4,4(a5)
@@ -1479,7 +1479,7 @@ Déassemblage de la section .text :
     151c:	00812423          	sw	s0,8(sp)
     1520:	00050413          	mv	s0,a0
     1524:	00006537          	lui	a0,0x6
-    1528:	ce450513          	addi	a0,a0,-796 # 5ce4 <font+0x238>
+    1528:	cf450513          	addi	a0,a0,-780 # 5cf4 <font+0x248>
     152c:	00112623          	sw	ra,12(sp)
     1530:	fffff097          	auipc	ra,0xfffff
     1534:	7f4080e7          	jalr	2036(ra) # d24 <printf>
@@ -1487,36 +1487,36 @@ Déassemblage de la section .text :
     153c:	00100793          	li	a5,1
     1540:	06f70c63          	beq	a4,a5,15b8 <fatfs_show_details+0xa0>
     1544:	000065b7          	lui	a1,0x6
-    1548:	cdc58593          	addi	a1,a1,-804 # 5cdc <font+0x230>
+    1548:	cec58593          	addi	a1,a1,-788 # 5cec <font+0x240>
     154c:	00006537          	lui	a0,0x6
-    1550:	cf450513          	addi	a0,a0,-780 # 5cf4 <font+0x248>
+    1550:	d0450513          	addi	a0,a0,-764 # 5d04 <font+0x258>
     1554:	fffff097          	auipc	ra,0xfffff
     1558:	7d0080e7          	jalr	2000(ra) # d24 <printf>
     155c:	00842583          	lw	a1,8(s0)
     1560:	00006537          	lui	a0,0x6
-    1564:	d0050513          	addi	a0,a0,-768 # 5d00 <font+0x254>
+    1564:	d1050513          	addi	a0,a0,-752 # 5d10 <font+0x264>
     1568:	fffff097          	auipc	ra,0xfffff
     156c:	7bc080e7          	jalr	1980(ra) # d24 <printf>
     1570:	01442583          	lw	a1,20(s0)
     1574:	00006537          	lui	a0,0x6
-    1578:	d2050513          	addi	a0,a0,-736 # 5d20 <font+0x274>
+    1578:	d3050513          	addi	a0,a0,-720 # 5d30 <font+0x284>
     157c:	fffff097          	auipc	ra,0xfffff
     1580:	7a8080e7          	jalr	1960(ra) # d24 <printf>
     1584:	00442583          	lw	a1,4(s0)
     1588:	00006537          	lui	a0,0x6
-    158c:	d3850513          	addi	a0,a0,-712 # 5d38 <font+0x28c>
+    158c:	d4850513          	addi	a0,a0,-696 # 5d48 <font+0x29c>
     1590:	fffff097          	auipc	ra,0xfffff
     1594:	794080e7          	jalr	1940(ra) # d24 <printf>
     1598:	00044583          	lbu	a1,0(s0)
     159c:	00812403          	lw	s0,8(sp)
     15a0:	00c12083          	lw	ra,12(sp)
     15a4:	00006537          	lui	a0,0x6
-    15a8:	d5450513          	addi	a0,a0,-684 # 5d54 <font+0x2a8>
+    15a8:	d6450513          	addi	a0,a0,-668 # 5d64 <font+0x2b8>
     15ac:	01010113          	addi	sp,sp,16
     15b0:	fffff317          	auipc	t1,0xfffff
     15b4:	77430067          	jr	1908(t1) # d24 <printf>
     15b8:	000065b7          	lui	a1,0x6
-    15bc:	cd458593          	addi	a1,a1,-812 # 5cd4 <font+0x228>
+    15bc:	ce458593          	addi	a1,a1,-796 # 5ce4 <font+0x238>
     15c0:	f8dff06f          	j	154c <fatfs_show_details+0x34>
 
 000015c4 <fatfs_get_root_cluster>:
@@ -1546,41 +1546,41 @@ Déassemblage de la section .text :
     15f8:	00812423          	sw	s0,8(sp)
     15fc:	00006437          	lui	s0,0x6
     1600:	00112623          	sw	ra,12(sp)
-    1604:	e5c40793          	addi	a5,s0,-420 # 5e5c <_free_file_list>
+    1604:	e6c40793          	addi	a5,s0,-404 # 5e6c <_free_file_list>
     1608:	0007a223          	sw	zero,4(a5)
     160c:	0007a023          	sw	zero,0(a5)
-    1610:	000065b7          	lui	a1,0x6
+    1610:	000075b7          	lui	a1,0x7
     1614:	000067b7          	lui	a5,0x6
-    1618:	e6478793          	addi	a5,a5,-412 # 5e64 <_open_file_list>
-    161c:	e5c40513          	addi	a0,s0,-420
-    1620:	76c58593          	addi	a1,a1,1900 # 676c <_files+0x43c>
+    1618:	e7478793          	addi	a5,a5,-396 # 5e74 <_open_file_list>
+    161c:	e6c40513          	addi	a0,s0,-404
+    1620:	85858593          	addi	a1,a1,-1960 # 6858 <_files+0x43c>
     1624:	0007a223          	sw	zero,4(a5)
     1628:	0007a023          	sw	zero,0(a5)
     162c:	00000097          	auipc	ra,0x0
     1630:	85c080e7          	jalr	-1956(ra) # e88 <fat_list_insert_last>
     1634:	000075b7          	lui	a1,0x7
-    1638:	e5c40513          	addi	a0,s0,-420
-    163c:	bb058593          	addi	a1,a1,-1104 # 6bb0 <_files+0x880>
+    1638:	e6c40513          	addi	a0,s0,-404
+    163c:	c9c58593          	addi	a1,a1,-868 # 6c9c <_files+0x880>
     1640:	00000097          	auipc	ra,0x0
     1644:	848080e7          	jalr	-1976(ra) # e88 <fat_list_insert_last>
     1648:	00c12083          	lw	ra,12(sp)
     164c:	00812403          	lw	s0,8(sp)
     1650:	000067b7          	lui	a5,0x6
     1654:	00100713          	li	a4,1
-    1658:	e6e7a823          	sw	a4,-400(a5) # 5e70 <_filelib_init>
+    1658:	e8e7a023          	sw	a4,-384(a5) # 5e80 <_filelib_init>
     165c:	01010113          	addi	sp,sp,16
     1660:	00008067          	ret
 
 00001664 <fl_attach_locks>:
     1664:	000067b7          	lui	a5,0x6
-    1668:	ec878793          	addi	a5,a5,-312 # 5ec8 <_fs>
+    1668:	fb478793          	addi	a5,a5,-76 # 5fb4 <_fs>
     166c:	02a7ae23          	sw	a0,60(a5)
     1670:	04b7a023          	sw	a1,64(a5)
     1674:	00008067          	ret
 
 00001678 <fl_fseek>:
     1678:	000067b7          	lui	a5,0x6
-    167c:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    167c:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     1680:	fe010113          	addi	sp,sp,-32
     1684:	00812c23          	sw	s0,24(sp)
     1688:	00912a23          	sw	s1,20(sp)
@@ -1598,9 +1598,9 @@ Déassemblage de la section .text :
     16b8:	00f49463          	bne	s1,a5,16c0 <fl_fseek+0x48>
     16bc:	0c091663          	bnez	s2,1788 <fl_fseek+0x110>
     16c0:	000067b7          	lui	a5,0x6
-    16c4:	ec878713          	addi	a4,a5,-312 # 5ec8 <_fs>
+    16c4:	fb478713          	addi	a4,a5,-76 # 5fb4 <_fs>
     16c8:	03c72703          	lw	a4,60(a4)
-    16cc:	ec878993          	addi	s3,a5,-312
+    16cc:	fb478993          	addi	s3,a5,-76
     16d0:	00070463          	beqz	a4,16d8 <fl_fseek+0x60>
     16d4:	000700e7          	jalr	a4
     16d8:	fff00793          	li	a5,-1
@@ -1653,7 +1653,7 @@ Déassemblage de la section .text :
 00001790 <fl_fgetpos>:
     1790:	06050663          	beqz	a0,17fc <fl_fgetpos+0x6c>
     1794:	000067b7          	lui	a5,0x6
-    1798:	ec878713          	addi	a4,a5,-312 # 5ec8 <_fs>
+    1798:	fb478713          	addi	a4,a5,-76 # 5fb4 <_fs>
     179c:	03c72703          	lw	a4,60(a4)
     17a0:	ff010113          	addi	sp,sp,-16
     17a4:	00812423          	sw	s0,8(sp)
@@ -1662,7 +1662,7 @@ Déassemblage de la section .text :
     17b0:	00112623          	sw	ra,12(sp)
     17b4:	00050493          	mv	s1,a0
     17b8:	00058913          	mv	s2,a1
-    17bc:	ec878413          	addi	s0,a5,-312
+    17bc:	fb478413          	addi	s0,a5,-76
     17c0:	00070463          	beqz	a4,17c8 <fl_fgetpos+0x38>
     17c4:	000700e7          	jalr	a4
     17c8:	0084a783          	lw	a5,8(s1)
@@ -1696,14 +1696,14 @@ Déassemblage de la section .text :
 0000182c <fl_feof>:
     182c:	06050663          	beqz	a0,1898 <fl_feof+0x6c>
     1830:	000067b7          	lui	a5,0x6
-    1834:	ec878713          	addi	a4,a5,-312 # 5ec8 <_fs>
+    1834:	fb478713          	addi	a4,a5,-76 # 5fb4 <_fs>
     1838:	03c72703          	lw	a4,60(a4)
     183c:	fe010113          	addi	sp,sp,-32
     1840:	00812c23          	sw	s0,24(sp)
     1844:	00912a23          	sw	s1,20(sp)
     1848:	00112e23          	sw	ra,28(sp)
     184c:	00050413          	mv	s0,a0
-    1850:	ec878493          	addi	s1,a5,-312
+    1850:	fb478493          	addi	s1,a5,-76
     1854:	00070463          	beqz	a4,185c <fl_feof+0x30>
     1858:	000700e7          	jalr	a4
     185c:	00842783          	lw	a5,8(s0)
@@ -2147,7 +2147,7 @@ Déassemblage de la section .text :
     1ebc:	000065b7          	lui	a1,0x6
     1ec0:	07e00793          	li	a5,126
     1ec4:	01100613          	li	a2,17
-    1ec8:	cc058593          	addi	a1,a1,-832 # 5cc0 <font+0x214>
+    1ec8:	cd058593          	addi	a1,a1,-816 # 5cd0 <font+0x224>
     1ecc:	01c10513          	addi	a0,sp,28
     1ed0:	01010913          	addi	s2,sp,16
     1ed4:	00f10223          	sb	a5,4(sp)
@@ -2466,7 +2466,7 @@ Déassemblage de la section .text :
     2390:	fe010113          	addi	sp,sp,-32
     2394:	000067b7          	lui	a5,0x6
     2398:	00812c23          	sw	s0,24(sp)
-    239c:	e647a403          	lw	s0,-412(a5) # 5e64 <_open_file_list>
+    239c:	e747a403          	lw	s0,-396(a5) # 5e74 <_open_file_list>
     23a0:	00912a23          	sw	s1,20(sp)
     23a4:	01212823          	sw	s2,16(sp)
     23a8:	01312623          	sw	s3,12(sp)
@@ -2708,7 +2708,7 @@ Déassemblage de la section .text :
     2728:	00879793          	slli	a5,a5,0x8
     272c:	00e787b3          	add	a5,a5,a4
     2730:	0000b737          	lui	a4,0xb
-    2734:	a5570713          	addi	a4,a4,-1451 # aa55 <_files+0x4725>
+    2734:	a5570713          	addi	a4,a4,-1451 # aa55 <_files+0x4639>
     2738:	f8e790e3          	bne	a5,a4,26b8 <fatfs_init+0x50>
     273c:	20644783          	lbu	a5,518(s0)
     2740:	00600713          	li	a4,6
@@ -2811,7 +2811,7 @@ Déassemblage de la section .text :
     28c4:	00e787b3          	add	a5,a5,a4
     28c8:	0000b737          	lui	a4,0xb
     28cc:	01642223          	sw	s6,4(s0)
-    28d0:	a5570713          	addi	a4,a4,-1451 # aa55 <_files+0x4725>
+    28d0:	a5570713          	addi	a4,a4,-1451 # aa55 <_files+0x4639>
     28d4:	e4e790e3          	bne	a5,a4,2714 <fatfs_init+0xac>
     28d8:	05844783          	lbu	a5,88(s0)
     28dc:	05744703          	lbu	a4,87(s0)
@@ -2848,7 +2848,7 @@ Déassemblage de la section .text :
     2958:	ffb00513          	li	a0,-5
     295c:	d4f77ee3          	bgeu	a4,a5,26b8 <fatfs_init+0x50>
     2960:	00010737          	lui	a4,0x10
-    2964:	ff470713          	addi	a4,a4,-12 # fff4 <_files+0x9cc4>
+    2964:	ff470713          	addi	a4,a4,-12 # fff4 <_files+0x9bd8>
     2968:	02f76663          	bltu	a4,a5,2994 <fatfs_init+0x32c>
     296c:	00042423          	sw	zero,8(s0)
     2970:	02042823          	sw	zero,48(s0)
@@ -2866,7 +2866,7 @@ Déassemblage de la section .text :
 
 000029a0 <fl_attach_media>:
     29a0:	000067b7          	lui	a5,0x6
-    29a4:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    29a4:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     29a8:	ff010113          	addi	sp,sp,-16
     29ac:	00812423          	sw	s0,8(sp)
     29b0:	00912223          	sw	s1,4(sp)
@@ -2877,8 +2877,8 @@ Déassemblage de la section .text :
     29c4:	fffff097          	auipc	ra,0xfffff
     29c8:	c30080e7          	jalr	-976(ra) # 15f4 <fl_init>
     29cc:	00006537          	lui	a0,0x6
-    29d0:	ec850793          	addi	a5,a0,-312 # 5ec8 <_fs>
-    29d4:	ec850513          	addi	a0,a0,-312
+    29d0:	fb450793          	addi	a5,a0,-76 # 5fb4 <_fs>
+    29d4:	fb450513          	addi	a0,a0,-76
     29d8:	0287ac23          	sw	s0,56(a5)
     29dc:	0297aa23          	sw	s1,52(a5)
     29e0:	00000097          	auipc	ra,0x0
@@ -2887,7 +2887,7 @@ Déassemblage de la section .text :
     29ec:	02050863          	beqz	a0,2a1c <fl_attach_media+0x7c>
     29f0:	00050593          	mv	a1,a0
     29f4:	00006537          	lui	a0,0x6
-    29f8:	d7050513          	addi	a0,a0,-656 # 5d70 <font+0x2c4>
+    29f8:	d8050513          	addi	a0,a0,-640 # 5d80 <font+0x2d4>
     29fc:	ffffe097          	auipc	ra,0xffffe
     2a00:	328080e7          	jalr	808(ra) # d24 <printf>
     2a04:	00c12083          	lw	ra,12(sp)
@@ -2898,7 +2898,7 @@ Déassemblage de la section .text :
     2a18:	00008067          	ret
     2a1c:	000067b7          	lui	a5,0x6
     2a20:	00100713          	li	a4,1
-    2a24:	e6e7a623          	sw	a4,-404(a5) # 5e6c <_filelib_valid>
+    2a24:	e6e7ae23          	sw	a4,-388(a5) # 5e7c <_filelib_valid>
     2a28:	fddff06f          	j	2a04 <fl_attach_media+0x64>
 
 00002a2c <fatfs_format_fat16>:
@@ -2946,7 +2946,7 @@ Déassemblage de la section .text :
     2ad0:	00200793          	li	a5,2
     2ad4:	04f40823          	sb	a5,80(s0)
     2ad8:	000067b7          	lui	a5,0x6
-    2adc:	dd878793          	addi	a5,a5,-552 # 5dd8 <_cluster_size_table16>
+    2adc:	de878793          	addi	a5,a5,-536 # 5de8 <_cluster_size_table16>
     2ae0:	0047c583          	lbu	a1,4(a5)
     2ae4:	00058863          	beqz	a1,2af4 <fatfs_format_fat16+0xc8>
     2ae8:	0007a703          	lw	a4,0(a5)
@@ -3104,7 +3104,7 @@ Déassemblage de la section .text :
     2d40:	04f42623          	sw	a5,76(s0)
     2d44:	000067b7          	lui	a5,0x6
     2d48:	05440823          	sb	s4,80(s0)
-    2d4c:	e1878793          	addi	a5,a5,-488 # 5e18 <_cluster_size_table32>
+    2d4c:	e2878793          	addi	a5,a5,-472 # 5e28 <_cluster_size_table32>
     2d50:	0047c583          	lbu	a1,4(a5)
     2d54:	00058863          	beqz	a1,2d64 <fatfs_format_fat32+0xcc>
     2d58:	0007a703          	lw	a4,0(a5)
@@ -3127,7 +3127,7 @@ Déassemblage de la section .text :
     2d9c:	02f40623          	sb	a5,44(s0)
     2da0:	04f42a23          	sw	a5,84(s0)
     2da4:	000107b7          	lui	a5,0x10
-    2da8:	80078793          	addi	a5,a5,-2048 # f800 <_files+0x94d0>
+    2da8:	80078793          	addi	a5,a5,-2048 # f800 <_files+0x93e4>
     2dac:	04f42c23          	sw	a5,88(s0)
     2db0:	00ff07b7          	lui	a5,0xff0
     2db4:	03f78793          	addi	a5,a5,63 # ff003f <__stacktop+0xfe003f>
@@ -3253,7 +3253,7 @@ Déassemblage de la section .text :
     2f84:	00058613          	mv	a2,a1
     2f88:	00050593          	mv	a1,a0
     2f8c:	00006537          	lui	a0,0x6
-    2f90:	ec850513          	addi	a0,a0,-312 # 5ec8 <_fs>
+    2f90:	fb450513          	addi	a0,a0,-76 # 5fb4 <_fs>
     2f94:	00000317          	auipc	t1,0x0
     2f98:	fd830067          	jr	-40(t1) # 2f6c <fatfs_format>
 
@@ -3284,7 +3284,7 @@ Déassemblage de la section .text :
 
 00002ff8 <fl_shutdown>:
     2ff8:	000067b7          	lui	a5,0x6
-    2ffc:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    2ffc:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     3000:	ff010113          	addi	sp,sp,-16
     3004:	00112623          	sw	ra,12(sp)
     3008:	00812423          	sw	s0,8(sp)
@@ -3293,12 +3293,12 @@ Déassemblage de la section .text :
     3014:	ffffe097          	auipc	ra,0xffffe
     3018:	5e0080e7          	jalr	1504(ra) # 15f4 <fl_init>
     301c:	00006437          	lui	s0,0x6
-    3020:	ec840793          	addi	a5,s0,-312 # 5ec8 <_fs>
+    3020:	fb440793          	addi	a5,s0,-76 # 5fb4 <_fs>
     3024:	03c7a783          	lw	a5,60(a5)
-    3028:	ec840493          	addi	s1,s0,-312
+    3028:	fb440493          	addi	s1,s0,-76
     302c:	00078463          	beqz	a5,3034 <fl_shutdown+0x3c>
     3030:	000780e7          	jalr	a5
-    3034:	ec840513          	addi	a0,s0,-312
+    3034:	fb440513          	addi	a0,s0,-76
     3038:	00000097          	auipc	ra,0x0
     303c:	f64080e7          	jalr	-156(ra) # 2f9c <fatfs_fat_purge>
     3040:	0404a783          	lw	a5,64(s1)
@@ -3343,7 +3343,7 @@ Déassemblage de la section .text :
     30d4:	40940433          	sub	s0,s0,s1
     30d8:	00010737          	lui	a4,0x10
     30dc:	00141413          	slli	s0,s0,0x1
-    30e0:	fff70713          	addi	a4,a4,-1 # ffff <_files+0x9ccf>
+    30e0:	fff70713          	addi	a4,a4,-1 # ffff <_files+0x9be3>
     30e4:	00e47433          	and	s0,s0,a4
     30e8:	008787b3          	add	a5,a5,s0
     30ec:	0017c503          	lbu	a0,1(a5)
@@ -3365,7 +3365,7 @@ Déassemblage de la section .text :
     312c:	00749493          	slli	s1,s1,0x7
     3130:	40940433          	sub	s0,s0,s1
     3134:	00010737          	lui	a4,0x10
-    3138:	fff70713          	addi	a4,a4,-1 # ffff <_files+0x9ccf>
+    3138:	fff70713          	addi	a4,a4,-1 # ffff <_files+0x9be3>
     313c:	00241413          	slli	s0,s0,0x2
     3140:	00e47433          	and	s0,s0,a4
     3144:	008787b3          	add	a5,a5,s0
@@ -3602,7 +3602,7 @@ Déassemblage de la section .text :
     34c8:	eb010113          	addi	sp,sp,-336
     34cc:	13512a23          	sw	s5,308(sp)
     34d0:	00006ab7          	lui	s5,0x6
-    34d4:	ec8a8793          	addi	a5,s5,-312 # 5ec8 <_fs>
+    34d4:	fb4a8793          	addi	a5,s5,-76 # 5fb4 <_fs>
     34d8:	14812423          	sw	s0,328(sp)
     34dc:	14912223          	sw	s1,324(sp)
     34e0:	15212023          	sw	s2,320(sp)
@@ -3643,7 +3643,7 @@ Déassemblage de la section .text :
     356c:	00c10693          	addi	a3,sp,12
     3570:	02c10613          	addi	a2,sp,44
     3574:	00040593          	mv	a1,s0
-    3578:	ec8a8513          	addi	a0,s5,-312
+    3578:	fb4a8513          	addi	a0,s5,-76
     357c:	00000097          	auipc	ra,0x0
     3580:	d44080e7          	jalr	-700(ra) # 32c0 <fatfs_get_file_entry>
     3584:	fa050ee3          	beqz	a0,3540 <_open_directory+0x78>
@@ -3663,7 +3663,7 @@ Déassemblage de la section .text :
     35b4:	fff00793          	li	a5,-1
     35b8:	00f12623          	sw	a5,12(sp)
     35bc:	000067b7          	lui	a5,0x6
-    35c0:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    35c0:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     35c4:	00812c23          	sw	s0,24(sp)
     35c8:	01212823          	sw	s2,16(sp)
     35cc:	00112e23          	sw	ra,28(sp)
@@ -3674,9 +3674,9 @@ Déassemblage de la section .text :
     35e0:	ffffe097          	auipc	ra,0xffffe
     35e4:	014080e7          	jalr	20(ra) # 15f4 <fl_init>
     35e8:	000064b7          	lui	s1,0x6
-    35ec:	ec848793          	addi	a5,s1,-312 # 5ec8 <_fs>
+    35ec:	fb448793          	addi	a5,s1,-76 # 5fb4 <_fs>
     35f0:	03c7a783          	lw	a5,60(a5)
-    35f4:	ec848493          	addi	s1,s1,-312
+    35f4:	fb448493          	addi	s1,s1,-76
     35f8:	00078463          	beqz	a5,3600 <fl_opendir+0x50>
     35fc:	000780e7          	jalr	a5
     3600:	00090513          	mv	a0,s2
@@ -3767,13 +3767,13 @@ Déassemblage de la section .text :
     3744:	01444783          	lbu	a5,20(s0)
     3748:	0a079c63          	bnez	a5,3800 <_open_file+0x160>
     374c:	000067b7          	lui	a5,0x6
-    3750:	ed07a783          	lw	a5,-304(a5) # 5ed0 <_fs+0x8>
+    3750:	fbc7a783          	lw	a5,-68(a5) # 5fbc <_fs+0x8>
     3754:	00f42023          	sw	a5,0(s0)
     3758:	00042583          	lw	a1,0(s0)
     375c:	00006937          	lui	s2,0x6
     3760:	00010693          	mv	a3,sp
     3764:	00048613          	mv	a2,s1
-    3768:	ec890513          	addi	a0,s2,-312 # 5ec8 <_fs>
+    3768:	fb490513          	addi	a0,s2,-76 # 5fb4 <_fs>
     376c:	00000097          	auipc	ra,0x0
     3770:	b54080e7          	jalr	-1196(ra) # 32c0 <fatfs_get_file_entry>
     3774:	fa0506e3          	beqz	a0,3720 <_open_file+0x80>
@@ -3800,7 +3800,7 @@ Déassemblage de la section .text :
     37c8:	42f42823          	sw	a5,1072(s0)
     37cc:	22f42423          	sw	a5,552(s0)
     37d0:	22f42623          	sw	a5,556(s0)
-    37d4:	ec890513          	addi	a0,s2,-312
+    37d4:	fb490513          	addi	a0,s2,-76
     37d8:	fffff097          	auipc	ra,0xfffff
     37dc:	7c4080e7          	jalr	1988(ra) # 2f9c <fatfs_fat_purge>
     37e0:	03c12083          	lw	ra,60(sp)
@@ -4196,7 +4196,7 @@ Déassemblage de la section .text :
 
 00003dd8 <fl_readdir>:
     3dd8:	000067b7          	lui	a5,0x6
-    3ddc:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    3ddc:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     3de0:	fe010113          	addi	sp,sp,-32
     3de4:	00912a23          	sw	s1,20(sp)
     3de8:	01212823          	sw	s2,16(sp)
@@ -4209,12 +4209,12 @@ Déassemblage de la section .text :
     3e04:	ffffd097          	auipc	ra,0xffffd
     3e08:	7f0080e7          	jalr	2032(ra) # 15f4 <fl_init>
     3e0c:	00006437          	lui	s0,0x6
-    3e10:	ec840793          	addi	a5,s0,-312 # 5ec8 <_fs>
+    3e10:	fb440793          	addi	a5,s0,-76 # 5fb4 <_fs>
     3e14:	03c7a783          	lw	a5,60(a5)
-    3e18:	ec840993          	addi	s3,s0,-312
+    3e18:	fb440993          	addi	s3,s0,-76
     3e1c:	00078463          	beqz	a5,3e24 <fl_readdir+0x4c>
     3e20:	000780e7          	jalr	a5
-    3e24:	ec840513          	addi	a0,s0,-312
+    3e24:	fb440513          	addi	a0,s0,-76
     3e28:	00090613          	mv	a2,s2
     3e2c:	00048593          	mv	a1,s1
     3e30:	00000097          	auipc	ra,0x0
@@ -4235,7 +4235,7 @@ Déassemblage de la section .text :
 
 00003e6c <fl_listdirectory>:
     3e6c:	000067b7          	lui	a5,0x6
-    3e70:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    3e70:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     3e74:	ed010113          	addi	sp,sp,-304
     3e78:	12912223          	sw	s1,292(sp)
     3e7c:	12112623          	sw	ra,300(sp)
@@ -4246,14 +4246,14 @@ Déassemblage de la section .text :
     3e90:	ffffd097          	auipc	ra,0xffffd
     3e94:	764080e7          	jalr	1892(ra) # 15f4 <fl_init>
     3e98:	000067b7          	lui	a5,0x6
-    3e9c:	ec878713          	addi	a4,a5,-312 # 5ec8 <_fs>
+    3e9c:	fb478713          	addi	a4,a5,-76 # 5fb4 <_fs>
     3ea0:	03c72703          	lw	a4,60(a4)
-    3ea4:	ec878413          	addi	s0,a5,-312
+    3ea4:	fb478413          	addi	s0,a5,-76
     3ea8:	00070463          	beqz	a4,3eb0 <fl_listdirectory+0x44>
     3eac:	000700e7          	jalr	a4
     3eb0:	00006537          	lui	a0,0x6
     3eb4:	00048593          	mv	a1,s1
-    3eb8:	da450513          	addi	a0,a0,-604 # 5da4 <font+0x2f8>
+    3eb8:	db450513          	addi	a0,a0,-588 # 5db4 <font+0x308>
     3ebc:	ffffd097          	auipc	ra,0xffffd
     3ec0:	e68080e7          	jalr	-408(ra) # d24 <printf>
     3ec4:	00410593          	addi	a1,sp,4
@@ -4279,13 +4279,13 @@ Déassemblage de la section .text :
     3f14:	11414783          	lbu	a5,276(sp)
     3f18:	00078c63          	beqz	a5,3f30 <fl_listdirectory+0xc4>
     3f1c:	01010593          	addi	a1,sp,16
-    3f20:	db890513          	addi	a0,s2,-584 # 5db8 <font+0x30c>
+    3f20:	dc890513          	addi	a0,s2,-568 # 5dc8 <font+0x31c>
     3f24:	ffffd097          	auipc	ra,0xffffd
     3f28:	e00080e7          	jalr	-512(ra) # d24 <printf>
     3f2c:	fb5ff06f          	j	3ee0 <fl_listdirectory+0x74>
     3f30:	11c12603          	lw	a2,284(sp)
     3f34:	01010593          	addi	a1,sp,16
-    3f38:	dc448513          	addi	a0,s1,-572 # 5dc4 <font+0x318>
+    3f38:	dd448513          	addi	a0,s1,-556 # 5dd4 <font+0x328>
     3f3c:	ffffd097          	auipc	ra,0xffffd
     3f40:	de8080e7          	jalr	-536(ra) # d24 <printf>
     3f44:	f9dff06f          	j	3ee0 <fl_listdirectory+0x74>
@@ -4301,7 +4301,7 @@ Déassemblage de la section .text :
     3f64:	01612823          	sw	s6,16(sp)
     3f68:	00006b37          	lui	s6,0x6
     3f6c:	01512a23          	sw	s5,20(sp)
-    3f70:	ec8b4a83          	lbu	s5,-312(s6) # 5ec8 <_fs>
+    3f70:	fb4b4a83          	lbu	s5,-76(s6) # 5fb4 <_fs>
     3f74:	01412c23          	sw	s4,24(sp)
     3f78:	00058a13          	mv	s4,a1
     3f7c:	02912223          	sw	s1,36(sp)
@@ -4348,13 +4348,13 @@ Déassemblage de la section .text :
     4020:	fef580e3          	beq	a1,a5,4000 <_read_sectors+0xa0>
     4024:	22b4a623          	sw	a1,556(s1)
     4028:	2324a423          	sw	s2,552(s1)
-    402c:	ec8b0513          	addi	a0,s6,-312
+    402c:	fb4b0513          	addi	a0,s6,-76
     4030:	ffffd097          	auipc	ra,0xffffd
     4034:	308080e7          	jalr	776(ra) # 1338 <fatfs_lba_of_cluster>
     4038:	017505b3          	add	a1,a0,s7
     403c:	00040693          	mv	a3,s0
     4040:	000c0613          	mv	a2,s8
-    4044:	ec8b0513          	addi	a0,s6,-312
+    4044:	fb4b0513          	addi	a0,s6,-76
     4048:	ffffd097          	auipc	ra,0xffffd
     404c:	340080e7          	jalr	832(ra) # 1388 <fatfs_sector_read>
     4050:	fa0508e3          	beqz	a0,4000 <_read_sectors+0xa0>
@@ -4374,7 +4374,7 @@ Déassemblage de la section .text :
     4088:	0044a583          	lw	a1,4(s1)
     408c:	00000993          	li	s3,0
     4090:	f89ff06f          	j	4018 <_read_sectors+0xb8>
-    4094:	ec8b0513          	addi	a0,s6,-312
+    4094:	fb4b0513          	addi	a0,s6,-76
     4098:	fffff097          	auipc	ra,0xfffff
     409c:	fd8080e7          	jalr	-40(ra) # 3070 <fatfs_find_next_cluster>
     40a0:	00050593          	mv	a1,a0
@@ -4443,7 +4443,7 @@ Déassemblage de la section .text :
     418c:	00050913          	mv	s2,a0
     4190:	00058493          	mv	s1,a1
     4194:	00060a13          	mv	s4,a2
-    4198:	fff98993          	addi	s3,s3,-1 # ffff <_files+0x9ccf>
+    4198:	fff98993          	addi	s3,s3,-1 # ffff <_files+0x9be3>
     419c:	fffa8a93          	addi	s5,s5,-1 # fffffff <__stacktop+0xffeffff>
     41a0:	03092783          	lw	a5,48(s2)
     41a4:	0074d413          	srli	s0,s1,0x7
@@ -4533,7 +4533,7 @@ Déassemblage de la section .text :
     42ec:	41240433          	sub	s0,s0,s2
     42f0:	000106b7          	lui	a3,0x10
     42f4:	00141413          	slli	s0,s0,0x1
-    42f8:	fff68693          	addi	a3,a3,-1 # ffff <_files+0x9ccf>
+    42f8:	fff68693          	addi	a3,a3,-1 # ffff <_files+0x9be3>
     42fc:	00d47433          	and	s0,s0,a3
     4300:	00870733          	add	a4,a4,s0
     4304:	00c70023          	sb	a2,0(a4)
@@ -4556,7 +4556,7 @@ Déassemblage de la section .text :
     4348:	00791913          	slli	s2,s2,0x7
     434c:	41240433          	sub	s0,s0,s2
     4350:	000106b7          	lui	a3,0x10
-    4354:	fff68693          	addi	a3,a3,-1 # ffff <_files+0x9ccf>
+    4354:	fff68693          	addi	a3,a3,-1 # ffff <_files+0x9be3>
     4358:	00241413          	slli	s0,s0,0x2
     435c:	00d47433          	and	s0,s0,a3
     4360:	00870733          	add	a4,a4,s0
@@ -4761,7 +4761,7 @@ Déassemblage de la section .text :
     4654:	03312e23          	sw	s3,60(sp)
     4658:	000069b7          	lui	s3,0x6
     465c:	03612823          	sw	s6,48(sp)
-    4660:	ec89cb03          	lbu	s6,-312(s3) # 5ec8 <_fs>
+    4660:	fb49cb03          	lbu	s6,-76(s3) # 5fb4 <_fs>
     4664:	03512a23          	sw	s5,52(sp)
     4668:	00058a93          	mv	s5,a1
     466c:	fff00793          	li	a5,-1
@@ -4789,7 +4789,7 @@ Déassemblage de la section .text :
     46c4:	f9c080e7          	jalr	-100(ra) # 65c <__umodsi3>
     46c8:	00ab87b3          	add	a5,s7,a0
     46cc:	00050c13          	mv	s8,a0
-    46d0:	ec898d13          	addi	s10,s3,-312
+    46d0:	fb498d13          	addi	s10,s3,-76
     46d4:	000b8913          	mv	s2,s7
     46d8:	00fb7e63          	bgeu	s6,a5,46f4 <_write_sectors+0xa4>
     46dc:	00048593          	mv	a1,s1
@@ -4801,13 +4801,13 @@ Déassemblage de la section .text :
     46f4:	22842a03          	lw	s4,552(s0)
     46f8:	069a1663          	bne	s4,s1,4764 <_write_sectors+0x114>
     46fc:	22c42583          	lw	a1,556(s0)
-    4700:	ec898513          	addi	a0,s3,-312
+    4700:	fb498513          	addi	a0,s3,-76
     4704:	ffffd097          	auipc	ra,0xffffd
     4708:	c34080e7          	jalr	-972(ra) # 1338 <fatfs_lba_of_cluster>
     470c:	018505b3          	add	a1,a0,s8
     4710:	00090693          	mv	a3,s2
     4714:	000c8613          	mv	a2,s9
-    4718:	ec898513          	addi	a0,s3,-312
+    4718:	fb498513          	addi	a0,s3,-76
     471c:	ffffd097          	auipc	ra,0xffffd
     4720:	c84080e7          	jalr	-892(ra) # 13a0 <fatfs_sector_write>
     4724:	0c050063          	beqz	a0,47e4 <_write_sectors+0x194>
@@ -4840,7 +4840,7 @@ Déassemblage de la section .text :
     4790:	00442583          	lw	a1,4(s0)
     4794:	00000a13          	li	s4,0
     4798:	fddff06f          	j	4774 <_write_sectors+0x124>
-    479c:	ec898513          	addi	a0,s3,-312
+    479c:	fb498513          	addi	a0,s3,-76
     47a0:	00b12623          	sw	a1,12(sp)
     47a4:	fffff097          	auipc	ra,0xfffff
     47a8:	8cc080e7          	jalr	-1844(ra) # 3070 <fatfs_find_next_cluster>
@@ -4854,7 +4854,7 @@ Déassemblage de la section .text :
     47c8:	e50080e7          	jalr	-432(ra) # 614 <__udivsi3>
     47cc:	00050613          	mv	a2,a0
     47d0:	01c10593          	addi	a1,sp,28
-    47d4:	ec898513          	addi	a0,s3,-312
+    47d4:	fb498513          	addi	a0,s3,-76
     47d8:	00000097          	auipc	ra,0x0
     47dc:	da8080e7          	jalr	-600(ra) # 4580 <fatfs_add_free_space>
     47e0:	00051c63          	bnez	a0,47f8 <_write_sectors+0x1a8>
@@ -4868,7 +4868,7 @@ Déassemblage de la section .text :
 
 00004800 <fl_fflush>:
     4800:	000067b7          	lui	a5,0x6
-    4804:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    4804:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     4808:	ff010113          	addi	sp,sp,-16
     480c:	00812423          	sw	s0,8(sp)
     4810:	00112623          	sw	ra,12(sp)
@@ -4879,9 +4879,9 @@ Déassemblage de la section .text :
     4824:	dd4080e7          	jalr	-556(ra) # 15f4 <fl_init>
     4828:	04040863          	beqz	s0,4878 <fl_fflush+0x78>
     482c:	000067b7          	lui	a5,0x6
-    4830:	ec878713          	addi	a4,a5,-312 # 5ec8 <_fs>
+    4830:	fb478713          	addi	a4,a5,-76 # 5fb4 <_fs>
     4834:	03c72703          	lw	a4,60(a4)
-    4838:	ec878493          	addi	s1,a5,-312
+    4838:	fb478493          	addi	s1,a5,-76
     483c:	00070463          	beqz	a4,4844 <fl_fflush+0x44>
     4840:	000700e7          	jalr	a4
     4844:	43442783          	lw	a5,1076(s0)
@@ -4906,7 +4906,7 @@ Déassemblage de la section .text :
 
 00004890 <fl_fclose>:
     4890:	000067b7          	lui	a5,0x6
-    4894:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    4894:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     4898:	ff010113          	addi	sp,sp,-16
     489c:	00812423          	sw	s0,8(sp)
     48a0:	00112623          	sw	ra,12(sp)
@@ -4918,9 +4918,9 @@ Déassemblage de la section .text :
     48b8:	d40080e7          	jalr	-704(ra) # 15f4 <fl_init>
     48bc:	08040e63          	beqz	s0,4958 <fl_fclose+0xc8>
     48c0:	000064b7          	lui	s1,0x6
-    48c4:	ec848793          	addi	a5,s1,-312 # 5ec8 <_fs>
+    48c4:	fb448793          	addi	a5,s1,-76 # 5fb4 <_fs>
     48c8:	03c7a783          	lw	a5,60(a5)
-    48cc:	ec848913          	addi	s2,s1,-312
+    48cc:	fb448913          	addi	s2,s1,-76
     48d0:	00078463          	beqz	a5,48d8 <fl_fclose+0x48>
     48d4:	000780e7          	jalr	a5
     48d8:	00040513          	mv	a0,s0
@@ -4931,7 +4931,7 @@ Déassemblage de la section .text :
     48ec:	00c42683          	lw	a3,12(s0)
     48f0:	00042583          	lw	a1,0(s0)
     48f4:	21c40613          	addi	a2,s0,540
-    48f8:	ec848513          	addi	a0,s1,-312
+    48f8:	fb448513          	addi	a0,s1,-76
     48fc:	fffff097          	auipc	ra,0xfffff
     4900:	ff0080e7          	jalr	-16(ra) # 38ec <fatfs_update_file_length>
     4904:	fff00793          	li	a5,-1
@@ -4944,7 +4944,7 @@ Déassemblage de la section .text :
     4920:	00042823          	sw	zero,16(s0)
     4924:	ffffd097          	auipc	ra,0xffffd
     4928:	9cc080e7          	jalr	-1588(ra) # 12f0 <_free_file>
-    492c:	ec848513          	addi	a0,s1,-312
+    492c:	fb448513          	addi	a0,s1,-76
     4930:	ffffe097          	auipc	ra,0xffffe
     4934:	66c080e7          	jalr	1644(ra) # 2f9c <fatfs_fat_purge>
     4938:	04092783          	lw	a5,64(s2)
@@ -4982,7 +4982,7 @@ Déassemblage de la section .text :
     49b0:	ffffc097          	auipc	ra,0xffffc
     49b4:	4b0080e7          	jalr	1200(ra) # e60 <__mulsi3>
     49b8:	000067b7          	lui	a5,0x6
-    49bc:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    49bc:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     49c0:	00050413          	mv	s0,a0
     49c4:	00079663          	bnez	a5,49d0 <fl_fread+0x60>
     49c8:	ffffd097          	auipc	ra,0xffffd
@@ -5147,7 +5147,7 @@ Déassemblage de la section .text :
     4c2c:	ffffc097          	auipc	ra,0xffffc
     4c30:	234080e7          	jalr	564(ra) # e60 <__mulsi3>
     4c34:	00006737          	lui	a4,0x6
-    4c38:	e7072703          	lw	a4,-400(a4) # 5e70 <_filelib_init>
+    4c38:	e8072703          	lw	a4,-384(a4) # 5e80 <_filelib_init>
     4c3c:	00050493          	mv	s1,a0
     4c40:	00071663          	bnez	a4,4c4c <fl_fwrite+0x68>
     4c44:	ffffd097          	auipc	ra,0xffffd
@@ -5171,9 +5171,9 @@ Déassemblage de la section .text :
     4c8c:	05010113          	addi	sp,sp,80
     4c90:	00008067          	ret
     4c94:	00006ab7          	lui	s5,0x6
-    4c98:	ec8a8713          	addi	a4,s5,-312 # 5ec8 <_fs>
+    4c98:	fb4a8713          	addi	a4,s5,-76 # 5fb4 <_fs>
     4c9c:	03c72703          	lw	a4,60(a4)
-    4ca0:	ec8a8a93          	addi	s5,s5,-312
+    4ca0:	fb4a8a93          	addi	s5,s5,-76
     4ca4:	00070463          	beqz	a4,4cac <fl_fwrite+0xc8>
     4ca8:	000700e7          	jalr	a4
     4cac:	438d4703          	lbu	a4,1080(s10)
@@ -5598,7 +5598,7 @@ Déassemblage de la section .text :
 
 00005310 <fl_fopen>:
     5310:	000067b7          	lui	a5,0x6
-    5314:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    5314:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     5318:	fa010113          	addi	sp,sp,-96
     531c:	04812c23          	sw	s0,88(sp)
     5320:	05412423          	sw	s4,72(sp)
@@ -5617,7 +5617,7 @@ Déassemblage de la section .text :
     5354:	ffffc097          	auipc	ra,0xffffc
     5358:	2a0080e7          	jalr	672(ra) # 15f4 <fl_init>
     535c:	000067b7          	lui	a5,0x6
-    5360:	e6c7a783          	lw	a5,-404(a5) # 5e6c <_filelib_valid>
+    5360:	e7c7a783          	lw	a5,-388(a5) # 5e7c <_filelib_valid>
     5364:	30078263          	beqz	a5,5668 <fl_fopen+0x358>
     5368:	300a0063          	beqz	s4,5668 <fl_fopen+0x358>
     536c:	10040463          	beqz	s0,5474 <fl_fopen+0x164>
@@ -5637,9 +5637,9 @@ Déassemblage de la section .text :
     53a4:	02b00f13          	li	t5,43
     53a8:	10a74263          	blt	a4,a0,54ac <fl_fopen+0x19c>
     53ac:	00006937          	lui	s2,0x6
-    53b0:	ec890793          	addi	a5,s2,-312 # 5ec8 <_fs>
+    53b0:	fb490793          	addi	a5,s2,-76 # 5fb4 <_fs>
     53b4:	0387a783          	lw	a5,56(a5)
-    53b8:	ec890b13          	addi	s6,s2,-312
+    53b8:	fb490b13          	addi	s6,s2,-76
     53bc:	00079463          	bnez	a5,53c4 <fl_fopen+0xb4>
     53c0:	0d94f493          	andi	s1,s1,217
     53c4:	03cb2783          	lw	a5,60(s6)
@@ -5755,7 +5755,7 @@ Déassemblage de la section .text :
     557c:	00042583          	lw	a1,0(s0)
     5580:	01010693          	addi	a3,sp,16
     5584:	000a8613          	mv	a2,s5
-    5588:	ec890513          	addi	a0,s2,-312
+    5588:	fb490513          	addi	a0,s2,-76
     558c:	ffffe097          	auipc	ra,0xffffe
     5590:	d34080e7          	jalr	-716(ra) # 32c0 <fatfs_get_file_entry>
     5594:	00100793          	li	a5,1
@@ -5764,7 +5764,7 @@ Déassemblage de la section .text :
     55a0:	00100693          	li	a3,1
     55a4:	00440613          	addi	a2,s0,4
     55a8:	00100593          	li	a1,1
-    55ac:	ec890513          	addi	a0,s2,-312
+    55ac:	fb490513          	addi	a0,s2,-76
     55b0:	00000097          	auipc	ra,0x0
     55b4:	910080e7          	jalr	-1776(ra) # 4ec0 <fatfs_allocate_free_space.part.0>
     55b8:	e8050ae3          	beqz	a0,544c <fl_fopen+0x13c>
@@ -5783,14 +5783,14 @@ Déassemblage de la section .text :
     55ec:	880080e7          	jalr	-1920(ra) # 1e68 <fatfs_lfn_generate_tail>
     55f0:	00042583          	lw	a1,0(s0)
     55f4:	000b8613          	mv	a2,s7
-    55f8:	ec890513          	addi	a0,s2,-312
+    55f8:	fb490513          	addi	a0,s2,-76
     55fc:	ffffe097          	auipc	ra,0xffffe
     5600:	21c080e7          	jalr	540(ra) # 3818 <fatfs_sfn_exists>
     5604:	06050663          	beqz	a0,5670 <fl_fopen+0x360>
     5608:	00198993          	addi	s3,s3,1
     560c:	fb999ee3          	bne	s3,s9,55c8 <fl_fopen+0x2b8>
     5610:	00442583          	lw	a1,4(s0)
-    5614:	ec890513          	addi	a0,s2,-312
+    5614:	fb490513          	addi	a0,s2,-76
     5618:	fffff097          	auipc	ra,0xfffff
     561c:	d84080e7          	jalr	-636(ra) # 439c <fatfs_free_cluster_chain>
     5620:	e2dff06f          	j	544c <fl_fopen+0x13c>
@@ -5819,7 +5819,7 @@ Déassemblage de la section .text :
     567c:	00000793          	li	a5,0
     5680:	000b8693          	mv	a3,s7
     5684:	000a8613          	mv	a2,s5
-    5688:	ec890513          	addi	a0,s2,-312
+    5688:	fb490513          	addi	a0,s2,-76
     568c:	00000097          	auipc	ra,0x0
     5690:	950080e7          	jalr	-1712(ra) # 4fdc <fatfs_add_file_entry>
     5694:	f6050ee3          	beqz	a0,5610 <fl_fopen+0x300>
@@ -5831,7 +5831,7 @@ Déassemblage de la section .text :
     56ac:	00042823          	sw	zero,16(s0)
     56b0:	22f42423          	sw	a5,552(s0)
     56b4:	22f42623          	sw	a5,556(s0)
-    56b8:	ec890513          	addi	a0,s2,-312
+    56b8:	fb490513          	addi	a0,s2,-76
     56bc:	ffffe097          	auipc	ra,0xffffe
     56c0:	8e0080e7          	jalr	-1824(ra) # 2f9c <fatfs_fat_purge>
     56c4:	e80c06e3          	beqz	s8,5550 <fl_fopen+0x240>
@@ -5842,18 +5842,18 @@ Déassemblage de la section .text :
     56d0:	fe010113          	addi	sp,sp,-32
     56d4:	00912a23          	sw	s1,20(sp)
     56d8:	000064b7          	lui	s1,0x6
-    56dc:	ec848793          	addi	a5,s1,-312 # 5ec8 <_fs>
+    56dc:	fb448793          	addi	a5,s1,-76 # 5fb4 <_fs>
     56e0:	03c7a783          	lw	a5,60(a5)
     56e4:	01212823          	sw	s2,16(sp)
     56e8:	00112e23          	sw	ra,28(sp)
     56ec:	00812c23          	sw	s0,24(sp)
-    56f0:	ec848913          	addi	s2,s1,-312
+    56f0:	fb448913          	addi	s2,s1,-76
     56f4:	00078863          	beqz	a5,5704 <fl_remove+0x34>
     56f8:	00a12623          	sw	a0,12(sp)
     56fc:	000780e7          	jalr	a5
     5700:	00c12503          	lw	a0,12(sp)
     5704:	000065b7          	lui	a1,0x6
-    5708:	dd458593          	addi	a1,a1,-556 # 5dd4 <font+0x328>
+    5708:	de458593          	addi	a1,a1,-540 # 5de4 <font+0x338>
     570c:	00000097          	auipc	ra,0x0
     5710:	c04080e7          	jalr	-1020(ra) # 5310 <fl_fopen>
     5714:	00050413          	mv	s0,a0
@@ -5871,13 +5871,13 @@ Déassemblage de la section .text :
     5744:	02010113          	addi	sp,sp,32
     5748:	00008067          	ret
     574c:	00452583          	lw	a1,4(a0)
-    5750:	ec848513          	addi	a0,s1,-312
+    5750:	fb448513          	addi	a0,s1,-76
     5754:	fffff097          	auipc	ra,0xfffff
     5758:	c48080e7          	jalr	-952(ra) # 439c <fatfs_free_cluster_chain>
     575c:	fc0500e3          	beqz	a0,571c <fl_remove+0x4c>
     5760:	00042583          	lw	a1,0(s0)
     5764:	21c40613          	addi	a2,s0,540
-    5768:	ec848513          	addi	a0,s1,-312
+    5768:	fb448513          	addi	a0,s1,-76
     576c:	ffffe097          	auipc	ra,0xffffe
     5770:	2e8080e7          	jalr	744(ra) # 3a54 <fatfs_mark_file_deleted>
     5774:	fa0504e3          	beqz	a0,571c <fl_remove+0x4c>
@@ -5889,7 +5889,7 @@ Déassemblage de la section .text :
 
 0000578c <fl_createdirectory>:
     578c:	000067b7          	lui	a5,0x6
-    5790:	e707a783          	lw	a5,-400(a5) # 5e70 <_filelib_init>
+    5790:	e807a783          	lw	a5,-384(a5) # 5e80 <_filelib_init>
     5794:	fa010113          	addi	sp,sp,-96
     5798:	05512223          	sw	s5,68(sp)
     579c:	04112e23          	sw	ra,92(sp)
@@ -5905,9 +5905,9 @@ Déassemblage de la section .text :
     57c4:	ffffc097          	auipc	ra,0xffffc
     57c8:	e30080e7          	jalr	-464(ra) # 15f4 <fl_init>
     57cc:	00006937          	lui	s2,0x6
-    57d0:	ec890793          	addi	a5,s2,-312 # 5ec8 <_fs>
+    57d0:	fb490793          	addi	a5,s2,-76 # 5fb4 <_fs>
     57d4:	03c7a783          	lw	a5,60(a5)
-    57d8:	ec890b13          	addi	s6,s2,-312
+    57d8:	fb490b13          	addi	s6,s2,-76
     57dc:	00078463          	beqz	a5,57e4 <fl_createdirectory+0x58>
     57e0:	000780e7          	jalr	a5
     57e4:	ffffc097          	auipc	ra,0xffffc
@@ -5971,7 +5971,7 @@ Déassemblage de la section .text :
     58cc:	00042583          	lw	a1,0(s0)
     58d0:	01010693          	addi	a3,sp,16
     58d4:	00098613          	mv	a2,s3
-    58d8:	ec890513          	addi	a0,s2,-312
+    58d8:	fb490513          	addi	a0,s2,-76
     58dc:	ffffe097          	auipc	ra,0xffffe
     58e0:	9e4080e7          	jalr	-1564(ra) # 32c0 <fatfs_get_file_entry>
     58e4:	00100793          	li	a5,1
@@ -5980,7 +5980,7 @@ Déassemblage de la section .text :
     58f0:	00100693          	li	a3,1
     58f4:	00440613          	addi	a2,s0,4
     58f8:	00100593          	li	a1,1
-    58fc:	ec890513          	addi	a0,s2,-312
+    58fc:	fb490513          	addi	a0,s2,-76
     5900:	fffff097          	auipc	ra,0xfffff
     5904:	5c0080e7          	jalr	1472(ra) # 4ec0 <fatfs_allocate_free_space.part.0>
     5908:	f60504e3          	beqz	a0,5870 <fl_createdirectory+0xe4>
@@ -6009,14 +6009,14 @@ Déassemblage de la section .text :
     5964:	508080e7          	jalr	1288(ra) # 1e68 <fatfs_lfn_generate_tail>
     5968:	00042583          	lw	a1,0(s0)
     596c:	000a8613          	mv	a2,s5
-    5970:	ec890513          	addi	a0,s2,-312
+    5970:	fb490513          	addi	a0,s2,-76
     5974:	ffffe097          	auipc	ra,0xffffe
     5978:	ea4080e7          	jalr	-348(ra) # 3818 <fatfs_sfn_exists>
     597c:	06050a63          	beqz	a0,59f0 <fl_createdirectory+0x264>
     5980:	001a0a13          	addi	s4,s4,1
     5984:	fb7a1ee3          	bne	s4,s7,5940 <fl_createdirectory+0x1b4>
     5988:	00442583          	lw	a1,4(s0)
-    598c:	ec890513          	addi	a0,s2,-312
+    598c:	fb490513          	addi	a0,s2,-76
     5990:	fffff097          	auipc	ra,0xfffff
     5994:	a0c080e7          	jalr	-1524(ra) # 439c <fatfs_free_cluster_chain>
     5998:	eb5ff06f          	j	584c <fl_createdirectory+0xc0>
@@ -6029,7 +6029,7 @@ Déassemblage de la section .text :
     59b4:	00442583          	lw	a1,4(s0)
     59b8:	000a8693          	mv	a3,s5
     59bc:	000a0613          	mv	a2,s4
-    59c0:	ec890513          	addi	a0,s2,-312
+    59c0:	fb490513          	addi	a0,s2,-76
     59c4:	ffffc097          	auipc	ra,0xffffc
     59c8:	a98080e7          	jalr	-1384(ra) # 145c <fatfs_write_sector>
     59cc:	ea0502e3          	beqz	a0,5870 <fl_createdirectory+0xe4>
@@ -6047,7 +6047,7 @@ Déassemblage de la section .text :
     59fc:	00000793          	li	a5,0
     5a00:	000a8693          	mv	a3,s5
     5a04:	00098613          	mv	a2,s3
-    5a08:	ec890513          	addi	a0,s2,-312
+    5a08:	fb490513          	addi	a0,s2,-76
     5a0c:	fffff097          	auipc	ra,0xfffff
     5a10:	5d0080e7          	jalr	1488(ra) # 4fdc <fatfs_add_file_entry>
     5a14:	00050493          	mv	s1,a0
@@ -6060,7 +6060,7 @@ Déassemblage de la section .text :
     5a30:	00042423          	sw	zero,8(s0)
     5a34:	42042a23          	sw	zero,1076(s0)
     5a38:	00042823          	sw	zero,16(s0)
-    5a3c:	ec890513          	addi	a0,s2,-312
+    5a3c:	fb490513          	addi	a0,s2,-76
     5a40:	ffffd097          	auipc	ra,0xffffd
     5a44:	55c080e7          	jalr	1372(ra) # 2f9c <fatfs_fat_purge>
     5a48:	00040513          	mv	a0,s0
@@ -6145,87 +6145,143 @@ Déassemblage de la section .text :
     5c8c:	00000001 00000003 00000005 00000007     ................
     5c9c:	00000009 0000000e 00000010 00000012     ................
     5cac:	00000014 00000016 00000018 0000001c     ................
-    5cbc:	0000001e 33323130 37363534 42413938     ....0123456789AB
-    5ccc:	46454443 00000000 33544146 00000032     CDEF....FAT32...
-    5cdc:	31544146 00000036 20544146 61746564     FAT16...FAT deta
-    5cec:	3a736c69 00000a0d 70795420 253d2065     ils:.... Type =%
-    5cfc:	00000073 6f6f5220 69442074 69462072     s... Root Dir Fi
-    5d0c:	20747372 73756c43 20726574 7825203d     rst Cluster = %x
-    5d1c:	00000a0d 54414620 67654220 4c206e69     .... FAT Begin L
-    5d2c:	3d204142 25783020 000a0d78 756c4320     BA = 0x%x... Clu
-    5d3c:	72657473 67654220 4c206e69 3d204142     ster Begin LBA =
-    5d4c:	25783020 000a0d78 63655320 73726f74      0x%x... Sectors
-    5d5c:	72655020 756c4320 72657473 25203d20      Per Cluster = %
-    5d6c:	000a0d64 5f544146 203a5346 6f727245     d...FAT_FS: Erro
-    5d7c:	6f632072 20646c75 20746f6e 64616f6c     r could not load
-    5d8c:	54414620 74656420 736c6961 64252820      FAT details (%d
-    5d9c:	0a0d2129 00000000 69440a0d 74636572     )!........Direct
-    5dac:	2079726f 0a0d7325 00000000 3c207325     ory %s......%s <
-    5dbc:	3e524944 00000a0d 5b207325 62206425     DIR>....%s [%d b
-    5dcc:	73657479 000a0d5d 00000072              ytes]...r...
+    5cbc:	0000001e 6c6c6548 6f77206f 21646c72     ....Hello world!
+    5ccc:	00000000 33323130 37363534 42413938     ....0123456789AB
+    5cdc:	46454443 00000000 33544146 00000032     CDEF....FAT32...
+    5cec:	31544146 00000036 20544146 61746564     FAT16...FAT deta
+    5cfc:	3a736c69 00000a0d 70795420 253d2065     ils:.... Type =%
+    5d0c:	00000073 6f6f5220 69442074 69462072     s... Root Dir Fi
+    5d1c:	20747372 73756c43 20726574 7825203d     rst Cluster = %x
+    5d2c:	00000a0d 54414620 67654220 4c206e69     .... FAT Begin L
+    5d3c:	3d204142 25783020 000a0d78 756c4320     BA = 0x%x... Clu
+    5d4c:	72657473 67654220 4c206e69 3d204142     ster Begin LBA =
+    5d5c:	25783020 000a0d78 63655320 73726f74      0x%x... Sectors
+    5d6c:	72655020 756c4320 72657473 25203d20      Per Cluster = %
+    5d7c:	000a0d64 5f544146 203a5346 6f727245     d...FAT_FS: Erro
+    5d8c:	6f632072 20646c75 20746f6e 64616f6c     r could not load
+    5d9c:	54414620 74656420 736c6961 64252820      FAT details (%d
+    5dac:	0a0d2129 00000000 69440a0d 74636572     )!........Direct
+    5dbc:	2079726f 0a0d7325 00000000 3c207325     ory %s......%s <
+    5dcc:	3e524944 00000a0d 5b207325 62206425     DIR>....%s [%d b
+    5ddc:	73657479 000a0d5d 00000072              ytes]...r...
 
-00005dd8 <_cluster_size_table16>:
-    5dd8:	00007fa8 00000002 00040000 00000004     ................
-    5de8:	00080000 00000008 00100000 00000010     ................
-    5df8:	00200000 00000020 00400000 00000040     .. . .....@.@...
-    5e08:	00800000 00000080 00000000 00000000     ................
+00005de8 <_cluster_size_table16>:
+    5de8:	00007fa8 00000002 00040000 00000004     ................
+    5df8:	00080000 00000008 00100000 00000010     ................
+    5e08:	00200000 00000020 00400000 00000040     .. . .....@.@...
+    5e18:	00800000 00000080 00000000 00000000     ................
 
-00005e18 <_cluster_size_table32>:
-    5e18:	00082000 00000001 01000000 00000008     . ..............
-    5e28:	02000000 00000010 04000000 00000020     ............ ...
-    5e38:	ffffffff 00000040 00000000 00000000     ....@...........
+00005e28 <_cluster_size_table32>:
+    5e28:	00082000 00000001 01000000 00000008     . ..............
+    5e38:	02000000 00000010 04000000 00000020     ............ ...
+    5e48:	ffffffff 00000040 00000000 00000000     ....@...........
 
-00005e48 <sdcard_while_loading_callback>:
-    5e48:	00000000                                ....
-
-00005e4c <back_color>:
-	...
-
-00005e4d <front_color>:
-    5e4d:	                                         ...
-
-00005e50 <cursor_y>:
-    5e50:	00000000                                ....
-
-00005e54 <cursor_x>:
-    5e54:	00000000                                ....
-
-00005e58 <f_putchar>:
+00005e58 <sdcard_while_loading_callback>:
     5e58:	00000000                                ....
 
-00005e5c <_free_file_list>:
+00005e5c <back_color>:
 	...
 
-00005e64 <_open_file_list>:
+00005e5d <front_color>:
+    5e5d:	                                         ...
+
+00005e60 <cursor_y>:
+    5e60:	00000000                                ....
+
+00005e64 <cursor_x>:
+    5e64:	00000000                                ....
+
+00005e68 <f_putchar>:
+    5e68:	00000000                                ....
+
+00005e6c <_free_file_list>:
 	...
 
-00005e6c <_filelib_valid>:
-    5e6c:	00000000                                ....
+00005e74 <_open_file_list>:
+	...
 
-00005e70 <_filelib_init>:
-    5e70:	00000000                                ....
+00005e7c <_filelib_valid>:
+    5e7c:	00000000                                ....
+
+00005e80 <_filelib_init>:
+    5e80:	00000000                                ....
 
 Déassemblage de la section .text.startup :
 
-00005e74 <main>:
-    5e74:	000067b7          	lui	a5,0x6
-    5e78:	000f46b7          	lui	a3,0xf4
-    5e7c:	aa87a503          	lw	a0,-1368(a5) # 5aa8 <LEDS>
-    5e80:	00000713          	li	a4,0
-    5e84:	00100793          	li	a5,1
-    5e88:	23f68693          	addi	a3,a3,575 # f423f <__stacktop+0xe423f>
-    5e8c:	08000813          	li	a6,128
-    5e90:	00100593          	li	a1,1
-    5e94:	c00028f3          	rdcycle	a7
-    5e98:	c0002673          	rdcycle	a2
-    5e9c:	41160633          	sub	a2,a2,a7
-    5ea0:	fec6fce3          	bgeu	a3,a2,5e98 <main+0x24>
-    5ea4:	01078463          	beq	a5,a6,5eac <main+0x38>
-    5ea8:	00b79463          	bne	a5,a1,5eb0 <main+0x3c>
-    5eac:	40e58733          	sub	a4,a1,a4
-    5eb0:	00070863          	beqz	a4,5ec0 <main+0x4c>
-    5eb4:	00179793          	slli	a5,a5,0x1
-    5eb8:	00f52023          	sw	a5,0(a0)
-    5ebc:	fd9ff06f          	j	5e94 <main+0x20>
-    5ec0:	4017d793          	srai	a5,a5,0x1
-    5ec4:	ff5ff06f          	j	5eb8 <main+0x44>
+00005e84 <main>:
+    5e84:	000017b7          	lui	a5,0x1
+    5e88:	fe010113          	addi	sp,sp,-32
+    5e8c:	00006737          	lui	a4,0x6
+    5e90:	a6c78793          	addi	a5,a5,-1428 # a6c <display_putchar>
+    5e94:	00112e23          	sw	ra,28(sp)
+    5e98:	e6f72423          	sw	a5,-408(a4) # 5e68 <f_putchar>
+    5e9c:	00812c23          	sw	s0,24(sp)
+    5ea0:	01312623          	sw	s3,12(sp)
+    5ea4:	01512223          	sw	s5,4(sp)
+    5ea8:	00912a23          	sw	s1,20(sp)
+    5eac:	01212823          	sw	s2,16(sp)
+    5eb0:	01412423          	sw	s4,8(sp)
+    5eb4:	01612023          	sw	s6,0(sp)
+    5eb8:	ffffb097          	auipc	ra,0xffffb
+    5ebc:	a60080e7          	jalr	-1440(ra) # 918 <oled_init>
+    5ec0:	ffffb097          	auipc	ra,0xffffb
+    5ec4:	a64080e7          	jalr	-1436(ra) # 924 <oled_fullscreen>
+    5ec8:	00000513          	li	a0,0
+    5ecc:	ffffb097          	auipc	ra,0xffffb
+    5ed0:	af0080e7          	jalr	-1296(ra) # 9bc <oled_clear>
+    5ed4:	00000593          	li	a1,0
+    5ed8:	00000513          	li	a0,0
+    5edc:	ffffb097          	auipc	ra,0xffffb
+    5ee0:	b68080e7          	jalr	-1176(ra) # a44 <display_set_cursor>
+    5ee4:	00000593          	li	a1,0
+    5ee8:	0ff00513          	li	a0,255
+    5eec:	ffffb097          	auipc	ra,0xffffb
+    5ef0:	b6c080e7          	jalr	-1172(ra) # a58 <display_set_front_back_color>
+    5ef4:	00000413          	li	s0,0
+    5ef8:	000049b7          	lui	s3,0x4
+    5efc:	08000a93          	li	s5,128
+    5f00:	00040493          	mv	s1,s0
+    5f04:	0ff47a13          	zext.b	s4,s0
+    5f08:	01340933          	add	s2,s0,s3
+    5f0c:	ffffb097          	auipc	ra,0xffffb
+    5f10:	b2c080e7          	jalr	-1236(ra) # a38 <display_framebuffer>
+    5f14:	00950533          	add	a0,a0,s1
+    5f18:	01450023          	sb	s4,0(a0)
+    5f1c:	08048493          	addi	s1,s1,128
+    5f20:	fe9916e3          	bne	s2,s1,5f0c <main+0x88>
+    5f24:	00140413          	addi	s0,s0,1
+    5f28:	fd541ce3          	bne	s0,s5,5f00 <main+0x7c>
+    5f2c:	00000493          	li	s1,0
+    5f30:	00000413          	li	s0,0
+    5f34:	00100993          	li	s3,1
+    5f38:	00300913          	li	s2,3
+    5f3c:	00006a37          	lui	s4,0x6
+    5f40:	04000a93          	li	s5,64
+    5f44:	06c00b13          	li	s6,108
+    5f48:	00c0006f          	j	5f54 <main+0xd0>
+    5f4c:	00048993          	mv	s3,s1
+    5f50:	00000493          	li	s1,0
+    5f54:	00040513          	mv	a0,s0
+    5f58:	00048593          	mv	a1,s1
+    5f5c:	ffffb097          	auipc	ra,0xffffb
+    5f60:	ae8080e7          	jalr	-1304(ra) # a44 <display_set_cursor>
+    5f64:	cc0a0513          	addi	a0,s4,-832 # 5cc0 <font+0x214>
+    5f68:	ffffb097          	auipc	ra,0xffffb
+    5f6c:	dbc080e7          	jalr	-580(ra) # d24 <printf>
+    5f70:	01240433          	add	s0,s0,s2
+    5f74:	00000513          	li	a0,0
+    5f78:	ffffb097          	auipc	ra,0xffffb
+    5f7c:	a44080e7          	jalr	-1468(ra) # 9bc <oled_clear>
+    5f80:	028ad263          	bge	s5,s0,5fa4 <main+0x120>
+    5f84:	41200933          	neg	s2,s2
+    5f88:	04000413          	li	s0,64
+    5f8c:	009987b3          	add	a5,s3,s1
+    5f90:	413004b3          	neg	s1,s3
+    5f94:	fcfb40e3          	blt	s6,a5,5f54 <main+0xd0>
+    5f98:	fa07cae3          	bltz	a5,5f4c <main+0xc8>
+    5f9c:	00078493          	mv	s1,a5
+    5fa0:	fb5ff06f          	j	5f54 <main+0xd0>
+    5fa4:	fe0454e3          	bgez	s0,5f8c <main+0x108>
+    5fa8:	41200933          	neg	s2,s2
+    5fac:	00000413          	li	s0,0
+    5fb0:	fddff06f          	j	5f8c <main+0x108>
