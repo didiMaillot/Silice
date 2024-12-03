@@ -49,8 +49,12 @@ void main()
       }
     }
     fl_closedir(&dirstat);
+
+
   }
   // FL_UNLOCK(&_fs);
   display_refresh();
+
+  
 
 }
