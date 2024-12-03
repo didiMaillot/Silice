@@ -32,11 +32,24 @@ group mem_io
 // Audio output unit
 // --------------------------------------------------
 
-unit audio(input  uint8 audio_in,output uint4 audio_out)
+unit audio(input uint8 audio_in, output uint4 audio_out)
 {
+  
+  // Déclaration du compteur PWM
+  uint8 pwm_counter(0);
+
   always {
-    // simple passthrough
-    audio_out = audio_in[4,4];
+    // Incrémenter le compteur PWM
+    pwm_counter = pwm_counter + 1;
+
+    // Si le compteur PWM est inférieur au rapport cyclique, atténuer l'audio
+    if (pwm_counter <= audio_in) {
+      audio_out = 1;  
+    } else {
+      audio_out = 0; 
+    }
+
+   
   }
 }
 
@@ -216,6 +229,7 @@ $$end
       audio_buffer.addr1    = audio_buffer_start_waddr
                             | {prev_mem_addr[0,7],2b0}//addr from CPU (32bits)
                             | which; // sample address
+
       audio_buffer.wenable1 = audio_access; // write sample
     }
 
