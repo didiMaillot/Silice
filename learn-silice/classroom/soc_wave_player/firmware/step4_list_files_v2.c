@@ -14,7 +14,7 @@
 #include "fat_io_lib/src/fat_filelib.h"
 
 #define MAX_ITEMS 30  // Maximum number of items to display in the menu
-#define MAX_LEN 10  // Maximum number of letter in the item
+#define MAX_LEN 20  // Maximum number of letter in the item
 const char *items[MAX_ITEMS][MAX_LEN];  // Array of file names (songs)
 int item_count = 0;      // Number of items found
 
@@ -48,11 +48,9 @@ void main() {
     while (fl_readdir(&dirstat, &dirent) == 0) {
       if (!dirent.is_dir) {
 
-
-          if (item_count < MAX_ITEMS) {
             // Save file name as a music item
            memcpy(items[item_count++] , dirent.filename, MAX_ITEMS) ;
-          }
+        
       
       }
     }

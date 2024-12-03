@@ -178,7 +178,7 @@ $$end
     ram.wdata        = memio.wdata;
     ram.addr         = memio.addr;
     // writes CPU => peripherals
-    if (peripheral_w & ~audio_access /* & ~framebuffer_access*/) {
+    if (peripheral_w & ~audio_access /*& ~framebuffer_access*/) {
       /// LEDs
       leds           = leds_access ? prev_wdata[0,8] : leds;
       /// display
