@@ -139,7 +139,9 @@ $$end
     // ---- hardware audio streaming
     audio_l             = audio.audio_out; // feed output to on-board DAC
     audio_r             = audio.audio_out;
-    audio.audio_in      = audio_buffer.rdata0; // feed sample to audio out
+    uint8 sample     = audio_buffer.rdata0; // feed sample to audio out
+    
+    audio.audion_in = sample;
     audio_buffer_select = audio_buffer_sample[9,1]    // if == 512, done reading
         ? ~audio_buffer_select : audio_buffer_select; // swap buffers
     audio_buffer.addr0  = audio_buffer_start_raddr         // start addr
@@ -152,6 +154,20 @@ $$end
             : (audio_buffer_sample+1) // go to next sample
           );
     audio_counter       = (audio_counter == $PERIOD$) ? 0 : (audio_counter+1);
+
+    int9 signed_sample = __signed(sample) - __signed(128);
+    int9 abs_sample = signed_sample > 0 ? signed_sample : -signed_sample;
+    uint2 cursor = abs_sample >> 4;
+    leds[0,1] = cursors ==3;
+    leds[1,1] = cursors ==2;
+    leds[2,1] = cursors ==1;
+    leds[3,1] = cursors ==0;
+    leds[4,1] = cursors ==0;
+    leds[5,1] = cursors ==1;
+    leds[6,1] = cursors ==2;
+    leds[7,1] = cursors ==3;
+  
+
     // ---- check whether the CPU read from or wrote to a peripheral address
     uint1 peripheral   =  prev_mem_addr[$periph_bit$,1];
     uint1 peripheral_r =  peripheral & (prev_mem_rw == 4b0); // reading periph.
