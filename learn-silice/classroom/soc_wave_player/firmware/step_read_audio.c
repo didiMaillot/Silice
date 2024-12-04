@@ -63,6 +63,7 @@ void openMusic(const char *path_file, const char *file_name) {
 
   // Open the selected music file
   FL_FILE *f = fl_fopen(path, "rb");
+ // printf("%d\n",f);
   if (f == NULL) {
     // Error: file not found
     printf("file not found: %s\n", path);
@@ -77,13 +78,15 @@ void openMusic(const char *path_file, const char *file_name) {
     printf("playing ... ");
     display_refresh();
   *LEDS = 16;
-  /*  
+  
     int leds = 1;
     int dir = 0;
-    int *addr = (int*)(*AUDIO); // Hardware buffer address
     
     // Play the entire file
     while (1) {
+
+      int *addr = (int*)(*AUDIO); // Hardware buffer address
+
       // Read directly into the hardware buffer (512 bytes at a time)
       int sz = fl_fread(addr, 1, 512, f);
       
@@ -108,7 +111,7 @@ void openMusic(const char *path_file, const char *file_name) {
       }
       *LEDS = leds;
     }
-    */
+    
     // Close the file after playing
     fl_fclose(f);
   }
@@ -119,9 +122,10 @@ void openMusic(const char *path_file, const char *file_name) {
 void main() {
   // Initialize screen, SD card, and file system
   f_putchar = display_putchar;
+  memset(display_framebuffer(),0x00,128*128);
   oled_init();
   oled_fullscreen();
-  memset(display_framebuffer(),0x00,128*128);
+  
   oled_clear(0);
   sdcard_init();
   fl_init();

@@ -44,7 +44,7 @@ unit audio(input uint8 audio_in, output uint4 audio_out)
 
     // Si le compteur PWM est inférieur au rapport cyclique, atténuer l'audio
     if (pwm_counter <= audio_in) {
-      audio_out = 1;  
+      audio_out = 15;  
     } else {
       audio_out = 0; 
     }
