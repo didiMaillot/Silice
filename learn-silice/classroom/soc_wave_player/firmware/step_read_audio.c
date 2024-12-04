@@ -13,9 +13,9 @@
 #include "fat_io_lib/src/fat_filelib.h"
 
 #define MAX_ITEMS 4  // Maximum number of items to display in the menu
-#define MAX_LEN   20 // Maximum number of letters in the item
-const char *items[MAX_ITEMS][MAX_LEN];  // Array of file names (songs)
-int item_count = 0;      // Number of items found
+#define MAX_LEN   32 // Maximum number of letters in the item
+char items[MAX_ITEMS][MAX_LEN];  // Array of file names (songs)
+int  item_count = 0;      // Number of items found
 
 
 void clear_audio()
@@ -37,67 +37,91 @@ void clear_audio()
 // Function to open and play the selected music file
 void openMusic(const char *path_file, const char *file_name) {
   *LEDS = 255;
-  f_putchar = display_putchar;
-  memset(display_framebuffer(),0x00,128*128);
+  memset(display_framebuffer(), 0x00, 128 * 128);
   display_refresh();
   *LEDS = 1;
 
-  display_set_cursor(0,0);
-  display_set_front_back_color(255,0);
+  display_set_cursor(0, 0);
+  display_set_front_back_color(255, 0);
   display_refresh();
   *LEDS = 2;
 
   // Construct the full file path
- 
-  char path[128];  // Base path
+  char path[64];  // Base path
   path[0] = '\0';
   strcat(path, path_file);  // Append the directory path
   strcat(path, "/");  // Add a separator
-  strcat(path, file_name);  // Append the file name
+  const char *end = strcat(path, file_name);  // Append the file name
+  if (end - path > 64) {
+    *LEDS = 15;
+    printf("ERROR path too large\n");
+    display_refresh();
+    while (1) {}
+  }
   *LEDS = 4;
 
   printf("file: %s\n", path);
   display_refresh();
 
-// while(1){}
-
   // Open the selected music file
   FL_FILE *f = fl_fopen(path, "rb");
- // printf("%d\n",f);
   if (f == NULL) {
     // Error: file not found
     printf("file not found: %s\n", path);
     display_refresh();
-  *LEDS = 8;
+    *LEDS = 8;
     return;
   } else {
-    display_set_front_back_color(0,255);
+    display_set_front_back_color(0, 255);
     printf("music file found: %s\n", path);
     display_refresh();
-    display_set_front_back_color(255,0);
+    display_set_front_back_color(255, 0);
     printf("playing ... ");
     display_refresh();
-  *LEDS = 16;
-  
+    *LEDS = 16;
+
     int leds = 1;
     int dir = 0;
-    
+
+    // State variable for play/pause
+    int is_playing = 1;  // Initially playing
+
     // Play the entire file
     while (1) {
+      int *addr = (int *)(*AUDIO); // Hardware buffer address
 
-      int *addr = (int*)(*AUDIO); // Hardware buffer address
+      // If music is playing, read directly into the hardware buffer (512 bytes at a time)
+      if (is_playing) {
+        int sz = fl_fread(addr, 1, 512, f);
+        
+        // If fewer than 512 bytes were read, it means we reached the end of the file
+        if (sz < 512) {
+          break; // Break when the file is completely read
+        }
 
-      // Read directly into the hardware buffer (512 bytes at a time)
-      int sz = fl_fread(addr, 1, 512, f);
-      
-      // If fewer than 512 bytes were read, it means we reached the end of the file
-      if (sz < 512) {
-        break; // Break when the file is completely read
+        // Wait for buffer swap (wait until the buffer is not used by the hardware)
+        while (addr == (int *)(*AUDIO)) {
+          // You could add a timeout here in case something goes wrong
+        }
       }
 
-      // Wait for buffer swap (wait until the buffer is not used by the hardware)
-      while (addr == (int*)(*AUDIO)) {
-        // You could add a timeout here in case something goes wrong
+      // Handle play/pause button (button 6)
+      if (*BUTTONS & (1 << 6)) {
+        clear_audio();
+        while (*BUTTONS & (1 << 6)) {
+          // Wait for the button to be released to avoid multiple toggles with a single press
+        }
+
+        // Toggle play/pause state
+        is_playing = !is_playing;
+
+      
+      }
+
+      // Handle stop button (button 5)
+      if (*BUTTONS & (1 << 5)) {
+        clear_audio();
+        break;
       }
 
       // Light show (optional)
@@ -116,10 +140,15 @@ void openMusic(const char *path_file, const char *file_name) {
     fl_fclose(f);
   }
   *LEDS = 32;
-
 }
 
 void main() {
+
+  // Zero out strings
+  for (int i = 0;i<MAX_ITEMS;++i) {
+    items[i][0] = '\0';
+  }
+
   // Initialize screen, SD card, and file system
   f_putchar = display_putchar;
   memset(display_framebuffer(),0x00,128*128);
@@ -154,7 +183,7 @@ void main() {
     display_set_front_back_color(255, 0);
     printf("No music files found!\n");
     display_refresh();
-    while (1);  // Wait indefinitely
+    while (1) { }  // Wait indefinitely
   }
 
   // Song selection menu
@@ -188,7 +217,8 @@ void main() {
     }
     if (*BUTTONS & (1 << 6)) {
       // When select button is pressed, play the selected song
-      openMusic(path, items[selected]);  // Pass both the path and the file name
+      openMusic(path, items[selected]);
+
       *LEDS = 0;
     }
 
