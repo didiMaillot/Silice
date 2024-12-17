@@ -8,7 +8,8 @@
 #include "display.h"
 #include "printf.h"
 #include "sdcard.h"
-
+#define PATH_BUTTON_NOISE "/root/noise"
+#define  FILENAME_BUTTON_NOISE "n.raw"
 // Include the fat32 library
 #include "fat_io_lib/src/fat_filelib.h"
 
@@ -142,6 +143,69 @@ void openMusic(const char *path_file, const char *file_name) {
   *LEDS = 32;
 }
 
+
+void openNoise(const char *path_file, const char *file_name) {
+  *LEDS = 255;
+  memset(display_framebuffer(), 0x00, 128 * 128);
+  display_refresh();
+  *LEDS = 1;
+
+  display_set_cursor(0, 0);
+  display_set_front_back_color(255, 0);
+  display_refresh();
+  *LEDS = 2;
+
+  // Construct the full file path
+  char path[64];  // Base path
+  path[0] = '\0';
+  strcat(path, path_file);  // Append the directory path
+  strcat(path, "/");  // Add a separator
+  const char *end = strcat(path, file_name);  // Append the file name
+  if (end - path > 64) {
+    *LEDS = 15;
+    printf("ERROR path too large\n");
+    display_refresh();
+    while (1) {}
+  }
+  *LEDS = 4;
+
+  printf("file: %s\n", path);
+  display_refresh();
+
+  // Open the selected music file
+  FL_FILE *f = fl_fopen(path, "rb");
+  if (f == NULL) {
+    // Error: file not found
+    printf("file not found: %s\n", path);
+    display_refresh();
+    *LEDS = 8;
+    return;
+  } else {
+   
+
+    int leds = 1;
+    int dir = 0;
+
+    // State variable for play/pause
+    int is_playing = 1;  // Initially playing
+ // plays the entire file
+    while (1) {
+      // read directly in hardware buffer
+      int *addr = (int*)(*AUDIO);
+      // (use 512 bytes reads to avoid extra copies inside fat_io_lib)
+      int sz = fl_fread(addr,1,512,f);
+      if (sz < 512) break; // reached end of file
+      // wait for buffer swap
+      while (addr == (int*)(*AUDIO)) { }
+     
+    }
+    
+    // Close the file after playing
+    fl_fclose(f);
+  }
+  *LEDS = 32;
+}
+
 void main() {
 
   // Zero out strings
@@ -211,9 +275,11 @@ void main() {
     // Read buttons and update selection
     if (*BUTTONS & (1 << 3)) {
       ++selected;
+      openNoise(PATH_BUTTON_NOISE, FILENAME_BUTTON_NOISE);
     }
     if (*BUTTONS & (1 << 4)) {
       --selected;
+       openNoise(PATH_BUTTON_NOISE, FILENAME_BUTTON_NOISE);
     }
     if (*BUTTONS & (1 << 6)) {
       // When select button is pressed, play the selected song
