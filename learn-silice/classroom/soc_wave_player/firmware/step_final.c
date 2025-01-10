@@ -160,7 +160,6 @@ FL_FILE *f = fl_fopen("/Img/bib.raw","rb");
 
   }
 }
-// Function to open and play the selected music file
 void openMusic(const char *path_file, const char *file_name) {
   *LEDS = 255;
   memset(display_framebuffer(), 0x00, 128 * 128);
@@ -186,8 +185,8 @@ void openMusic(const char *path_file, const char *file_name) {
   }
   *LEDS = 4;
 
-   display_refresh();
-    selectImage(path_file);
+  display_refresh();
+  selectImage(path_file);  // Display the image as background
 
   // Open the selected music file
   FL_FILE *f = fl_fopen(path, "rb");
@@ -198,13 +197,6 @@ void openMusic(const char *path_file, const char *file_name) {
     *LEDS = 8;
     return;
   } else {
-   
-    //display_set_front_back_color(0, 255);
-   // printf("file: %s\n", path);
-    //display_refresh();
-    display_set_front_back_color(255, 0);
-    printf("playing ... ");
-    display_refresh();
     *LEDS = 16;
 
     int leds = 1;
@@ -213,6 +205,12 @@ void openMusic(const char *path_file, const char *file_name) {
     // State variable for play/pause
     int is_playing = 1;  // Initially playing
 
+    // Display "playing" initially
+    display_set_cursor(0, 10);  // Position for status
+    display_set_front_back_color(255, 0);
+    printf("Playing...     ");
+    display_refresh();
+
     // Play the entire file
     while (1) {
       int *addr = (int *)(*AUDIO); // Hardware buffer address
@@ -220,7 +218,7 @@ void openMusic(const char *path_file, const char *file_name) {
       // If music is playing, read directly into the hardware buffer (512 bytes at a time)
       if (is_playing) {
         int sz = fl_fread(addr, 1, 512, f);
-        
+
         // If fewer than 512 bytes were read, it means we reached the end of the file
         if (sz < 512) {
           memset(display_framebuffer(), 0x00, 128 * 128);
@@ -243,15 +241,24 @@ void openMusic(const char *path_file, const char *file_name) {
         // Toggle play/pause state
         is_playing = !is_playing;
 
-      
+        // Update display based on the current state
+        display_set_cursor(0, 10);  // Position for status
+        if (is_playing) {
+          display_set_front_back_color(255, 0);  // Playing
+          printf("Playing...     ");
+        } else {
+          display_set_front_back_color(255, 0);  // Paused
+          printf("Paused...      ");
+        }
+        display_refresh();  // Refresh display to show updated status
       }
 
       // Handle stop button (button 5)
       if (*BUTTONS & (1 << 5)) {
         clear_audio();
 
-      memset(display_framebuffer(),0x00,128*128);
-        break;
+        memset(display_framebuffer(), 0x00, 128 * 128);  // Clear screen (optional)
+        break;  // Stop playback
       }
 
       // Light show (optional)
@@ -265,12 +272,14 @@ void openMusic(const char *path_file, const char *file_name) {
       }
       *LEDS = leds;
     }
-    
+
     // Close the file after playing
     fl_fclose(f);
   }
   *LEDS = 32;
 }
+
+
 
 void main()
 {
