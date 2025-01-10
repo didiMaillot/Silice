@@ -83,6 +83,44 @@ void openImage(const char *file_name){
         fl_fclose(f);
     } 
 }
+
+void openJingle(){
+
+FL_FILE *f = fl_fopen("/Pop/can.raw","rb");
+  if (f == NULL) {
+    // error, no file
+    printf("file not found.\n");
+    display_refresh();
+  } else {
+    
+     display_set_front_back_color(255,0);
+        printf("   WELCOME ! ! !    \n\n");
+        display_refresh();
+    int leds = 1;
+    int dir  = 0;
+    // plays the entire file
+    while (1) { 
+      // read directly in hardware buffer
+      int *addr = (int*)(*AUDIO);
+      // (use 512 bytes reads to avoid extra copies inside fat_io_lib)
+      int sz = fl_fread(addr,1,512,f);
+      if (sz < 512) break; // reached end of file
+      // wait for buffer swap
+      while (addr == (int*)(*AUDIO)) { }
+      // light show!
+      if (leds == 128 || leds == 1) { dir = 1-dir; }
+      if (dir) {
+        leds = leds << 1;
+      } else {
+        leds = leds >> 1;
+      }
+      *LEDS = leds;
+    }
+    // close
+    fl_fclose(f);
+
+  }
+}
 // Function to open and play the selected music file
 void openMusic(const char *path_file, const char *file_name) {
   *LEDS = 255;
@@ -175,6 +213,8 @@ void openMusic(const char *path_file, const char *file_name) {
       // Handle stop button (button 5)
       if (*BUTTONS & (1 << 5)) {
         clear_audio();
+
+      memset(display_framebuffer(),0x00,128*128);
         break;
       }
 
@@ -218,14 +258,19 @@ void main()
   while (fl_attach_media(sdcard_readsector, sdcard_writesector) != FAT_INIT_OK) {
     // keep trying, we need this
   }
-
+  
+     memset(display_framebuffer(),0x00,128*128);
+    display_refresh();
+    display_set_cursor(0,0);
+    display_set_front_back_color(0,255);
+    openJingle();
   while(1) {
-    // header
+   
+
     memset(display_framebuffer(),0x00,128*128);
     display_refresh();
     display_set_cursor(0,0);
     display_set_front_back_color(0,255);
-    //printf("    ===== Musics =====    \n\n");
     display_refresh();
     display_set_front_back_color(255,0);
     // list files (see fl_listdirectory if at_io_lib/src/fat_filelib.c)
