@@ -39,20 +39,32 @@ void clear_audio()
 
 
 void selectImage(const char *path_file){
- //printf("je suis dans selectImage\n");
- //printf(path_file);
- //display_refresh();
+
     if( strncmp(path_file, "/Rock", 4) == 0){
        
         display_refresh();
-        openImage("r.data");
+        openImage("ro.data");
+   
+
+    }   if( strncmp(path_file, "/Classic", 7) == 0){
+       
+        display_refresh();
+        openImage("cc.data");
       
 
+    }  if( strncmp(path_file, "/Pop", 3) == 0){
+       
+        display_refresh();
+        openImage("p.data");
+      
 
-
+    }   if( strncmp(path_file, "/Electronic", 10) == 0){
+       
+        display_refresh();
+        openImage("e.data");
+      
     }
-        
-
+    
 
 
 }
@@ -73,7 +85,7 @@ void openImage(const char *file_name){
         printf("img.raw not found.\n");
         display_refresh();
     } else {
-        printf("image found.\n");
+        //printf("image found.\n");
         display_refresh();
         // read pixels in framebuffer
         fl_fread(display_framebuffer(),1,128*128,f);
@@ -86,7 +98,7 @@ void openImage(const char *file_name){
 
 void openJingle(){
 
-FL_FILE *f = fl_fopen("/Pop/can.raw","rb");
+FL_FILE *f = fl_fopen("/Img/gc.raw","rb");
   if (f == NULL) {
     // error, no file
     printf("file not found.\n");
@@ -121,6 +133,33 @@ FL_FILE *f = fl_fopen("/Pop/can.raw","rb");
 
   }
 }
+
+void openBruitage(){
+
+FL_FILE *f = fl_fopen("/Img/bib.raw","rb");
+  if (f == NULL) {
+    // error, no file
+    printf("file not found.\n");
+    display_refresh();
+  } else {
+    int leds = 1;
+    int dir  = 0;
+    // plays the entire file
+    while (1) { 
+      // read directly in hardware buffer
+      int *addr = (int*)(*AUDIO);
+      // (use 512 bytes reads to avoid extra copies inside fat_io_lib)
+      int sz = fl_fread(addr,1,512,f);
+      if (sz < 512) break; // reached end of file
+      // wait for buffer swap
+      while (addr == (int*)(*AUDIO)) { }
+   
+    }
+    // close
+    fl_fclose(f);
+
+  }
+}
 // Function to open and play the selected music file
 void openMusic(const char *path_file, const char *file_name) {
   *LEDS = 255;
@@ -147,9 +186,6 @@ void openMusic(const char *path_file, const char *file_name) {
   }
   *LEDS = 4;
 
-  printf("file: %s\n", path);
-  display_refresh();
-  printf("path: %s\n",path_file);
    display_refresh();
     selectImage(path_file);
 
@@ -163,9 +199,9 @@ void openMusic(const char *path_file, const char *file_name) {
     return;
   } else {
    
-    display_set_front_back_color(0, 255);
-    printf("file: %s\n", path);
-    display_refresh();
+    //display_set_front_back_color(0, 255);
+   // printf("file: %s\n", path);
+    //display_refresh();
     display_set_front_back_color(255, 0);
     printf("playing ... ");
     display_refresh();
@@ -259,7 +295,7 @@ void main()
     // keep trying, we need this
   }
   
-     memset(display_framebuffer(),0x00,128*128);
+    memset(display_framebuffer(),0x00,128*128);
     display_refresh();
     display_set_cursor(0,0);
     display_set_front_back_color(0,255);
@@ -296,7 +332,7 @@ void main()
         // pulsing header
         display_set_front_back_color((pulse+127)&255,pulse);
         pulse += 7;
-        printf("    ===== songs =====    \n\n");
+        printf("    ===== Songs =====    \n\n");
         // list items
         for (int i = 0; i < n_items; ++i) {
         if (i == selected) { // highlight selected
@@ -311,20 +347,27 @@ void main()
         // read buttons and update selection
         if (*BUTTONS & (1<<3)) {
             -- selected;
+            openBruitage();
         }
         if (*BUTTONS & (1<<4)) {
             ++ selected;
+            openBruitage();
         }
         if (*BUTTONS & (1<<5)) {
             strcpy(path, path_history);
             n_items = 0;
+            openBruitage();
             break;
         }
         if (*BUTTONS & (1<<6)) {
             if(is_music[selected]) {
+              openBruitage();
                 openMusic(path, item[selected]);
             }
             else {
+              openBruitage();
+
+         
                 memcpy(path_history, path, MAX_FILENAME_SIZE);
                 strcat(path, item[selected]);
                 n_items = 0;
