@@ -148,13 +148,12 @@ $$end
 
   // --- SOC logic, the always block is always active
   always {
-    display.enable     = 0;       // maintain display enable low (pulses on use)
+      display.enable     = 0;       // maintain display enable low (pulses on use)
     // ---- hardware audio streaming
     audio_l             = audio.audio_out; // feed output to on-board DAC
     audio_r             = audio.audio_out;
-   // uint8 sample     = audio_buffer.rdata0; // feed sample to audio out
-    
-    audio.audio_in = audio_buffer.rdata0; // feed sample to audio out
+    uint8 sample        = audio_buffer.rdata0;
+    audio.audio_in      = sample; // feed sample to audio out
     audio_buffer_select = audio_buffer_sample[9,1]    // if == 512, done reading
         ? ~audio_buffer_select : audio_buffer_select; // swap buffers
     audio_buffer.addr0  = audio_buffer_start_raddr         // start addr
@@ -167,21 +166,18 @@ $$end
             : (audio_buffer_sample+1) // go to next sample
           );
     audio_counter       = (audio_counter == $PERIOD$) ? 0 : (audio_counter+1);
-
-    
-  /*  if(sample[7,1]){
-      uint2 cursor = sample[3,3] | {3(sample[6,1]  ) };
-      leds[0,1] = (cursors >= 0) ? 1 : 0;
-      leds[1,1] = (cursors >= 1) ? 1 : 0;
-      leds[2,1] = (cursors >= 2) ? 1 : 0;
-      leds[3,1] = (cursors >= 3) ? 1 : 0;
-      leds[4,1] = (cursors >= 4) ? 1 : 0;
-      leds[5,1] = (cursors >= 5) ? 1 : 0;
-      leds[6,1] = (cursors >= 6) ? 1 : 0;
-      leds[7,1] = (cursors == 7 ) ? 1 : 0;
+    // ---- LED visuals
+    if (sample[7,1]) {
+      uint3 cursor       = sample[3,3] | {3{sample[6,1]}};
+      leds[0,1] = (cursor >= 0) ? 1 : 0;
+      leds[1,1] = (cursor >= 1) ? 1 : 0;
+      leds[2,1] = (cursor >= 2) ? 1 : 0;
+      leds[3,1] = (cursor >= 3) ? 1 : 0;
+      leds[4,1] = (cursor >= 4) ? 1 : 0;
+      leds[5,1] = (cursor >= 5) ? 1 : 0;
+      leds[6,1] = (cursor >= 6) ? 1 : 0;
+      leds[7,1] = (cursor == 7) ? 1 : 0;
     }
-  */
-  
     // ---- check whether the CPU read from or wrote to a peripheral address
     uint1 peripheral   =  prev_mem_addr[$periph_bit$,1];
     uint1 peripheral_r =  peripheral & (prev_mem_rw == 4b0); // reading periph.
@@ -208,9 +204,10 @@ $$end
     ram.wdata        = memio.wdata;
     ram.addr         = memio.addr;
     // writes CPU => peripherals
-    if (peripheral_w & ~audio_access /*& ~framebuffer_access*/) {
+   if (peripheral_w & ~audio_access
+                                    ) {
       /// LEDs
-      leds           = leds_access ? prev_wdata[0,8] : leds;
+      // leds           = leds_access ? prev_wdata[0,8] : leds;
       /// display
       if (display_direct_access) {
         // -> whether to send command or data
